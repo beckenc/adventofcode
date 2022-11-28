@@ -1,0 +1,130 @@
+{
+    "cmake.configureOnOpen": false,
+    "cmake.generator": "Unix Makefiles",
+    "files.autoSave": "afterDelay",
+    "cmake.sourceDirectory": "${workspaceFolder}",
+    "cmake.copyCompileCommands": "${workspaceFolder}/build/compile_commands.json",
+    "cmake.buildDirectory": "${workspaceFolder}/build/${variant:aoc_year}/${buildType}",
+    "cmake.defaultVariants": {
+        "buildType": {
+            "default": "debug",
+            "description": "The build type.",
+            "choices": {
+                "debug": {
+                    "short": "Debug",
+                    "long": "Disable optimizations - include debug information.",
+                    "buildType": "Debug"
+                },
+                "release": {
+                    "short": "Release",
+                    "long": "Optimize for speed - exclude debug information.",
+                    "buildType": "Release"
+                },
+                "minsize": {
+                    "short": "MinSizeRel",
+                    "long": "Optimize for smallest binary size - exclude debug information.",
+                    "buildType": "MinSizeRel"
+                },
+                "reldeb": {
+                    "short": "RelWithDebInfo",
+                    "long": "Optimize for speed - include debug information.",
+                    "buildType": "RelWithDebInfo"
+                }
+            }
+        },
+        "aoc_year": {
+            "default": "2022",
+            "description": "The year of the advent of code",
+            "choices": {
+                "2021": {
+                    "short": "2021",
+                    "long": "2021",
+                    "settings": {
+                        "AOC_YEAR": 2021
+                    }
+                },
+                "2022": {
+                    "short": "2022",
+                    "long": "2022",                 
+                    "settings": {
+                        "AOC_YEAR": 2022
+                    }                    
+                }                
+            }
+        }
+    },
+    "files.associations": {
+        "cctype": "cpp",
+        "clocale": "cpp",
+        "cmath": "cpp",
+        "cstdarg": "cpp",
+        "cstddef": "cpp",
+        "cstdio": "cpp",
+        "cstdlib": "cpp",
+        "cstring": "cpp",
+        "ctime": "cpp",
+        "cwchar": "cpp",
+        "cwctype": "cpp",
+        "any": "cpp",
+        "array": "cpp",
+        "atomic": "cpp",
+        "strstream": "cpp",
+        "bit": "cpp",
+        "*.tcc": "cpp",
+        "bitset": "cpp",
+        "chrono": "cpp",
+        "codecvt": "cpp",
+        "compare": "cpp",
+        "complex": "cpp",
+        "concepts": "cpp",
+        "condition_variable": "cpp",
+        "cstdint": "cpp",
+        "deque": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "map": "cpp",
+        "set": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "vector": "cpp",
+        "exception": "cpp",
+        "algorithm": "cpp",
+        "functional": "cpp",
+        "iterator": "cpp",
+        "memory": "cpp",
+        "memory_resource": "cpp",
+        "numeric": "cpp",
+        "optional": "cpp",
+        "random": "cpp",
+        "ratio": "cpp",
+        "string_view": "cpp",
+        "system_error": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "utility": "cpp",
+        "fstream": "cpp",
+        "initializer_list": "cpp",
+        "iomanip": "cpp",
+        "iosfwd": "cpp",
+        "iostream": "cpp",
+        "istream": "cpp",
+        "limits": "cpp",
+        "mutex": "cpp",
+        "new": "cpp",
+        "numbers": "cpp",
+        "ostream": "cpp",
+        "ranges": "cpp",
+        "semaphore": "cpp",
+        "sstream": "cpp",
+        "stdexcept": "cpp",
+        "stop_token": "cpp",
+        "streambuf": "cpp",
+        "thread": "cpp",
+        "cfenv": "cpp",
+        "cinttypes": "cpp",
+        "typeindex": "cpp",
+        "typeinfo": "cpp",
+        "variant": "cpp"
+    }
+}
