@@ -5,6 +5,8 @@
 #include <ranges>
 #include <utility>
 
+namespace aoc::day1 {
+
 auto count_increasing(std::istream &input) {
   return std::ranges::count_if(
       std::ranges::istream_view<unsigned>(input),
@@ -13,9 +15,10 @@ auto count_increasing(std::istream &input) {
       });
 }
 
-auto day1(int argc, char **argv) {
+auto main(int argc, char **argv) {
   std::cout << "Advent of code day1\n";
   std::cout << "The measured depth increased in " << count_increasing(std::cin)
             << " cases.\n";
   return 0;
 }
+}  // namespace aoc::day1

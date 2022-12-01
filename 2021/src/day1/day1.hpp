@@ -2,5 +2,8 @@
 
 #include <istream>
 
+namespace aoc::day1 {
+
 auto count_increasing(std::istream &input) -> unsigned;
-auto day1(int argc, char **argv) -> int;
+auto main(int argc, char **argv) -> int;
+}  // namespace aoc::day1

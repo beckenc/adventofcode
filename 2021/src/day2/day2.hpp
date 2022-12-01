@@ -1,2 +1,5 @@
 #pragma once
-auto day2(int argc, char **argv) -> int;
+
+namespace aoc::day2 {
+auto main(int argc, char **argv) -> int;
+}

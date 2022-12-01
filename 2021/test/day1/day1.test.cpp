@@ -17,6 +17,6 @@ TEST(TrivialTest, Day1) {
 
   for (auto &[input, count] : inputs) {
     std::stringstream s(input);
-    EXPECT_EQ(count_increasing(s), count) << " on input " << input;
+    EXPECT_EQ(aoc::day1::count_increasing(s), count) << " on input " << input;
   }
 }
