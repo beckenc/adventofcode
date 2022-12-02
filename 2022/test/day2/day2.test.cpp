@@ -8,12 +8,12 @@
 namespace aoc::day2 {
 
 TEST(SimpleTest, Day2) {
-  std::vector<std::pair<std::string, Game::Score_t>> inputs = {
+  std::vector<std::pair<std::string, Game<Round1>::Score_t>> inputs = {
       {"A Y", 8}, {"B X", 1}, {"C Z", 6}, {"A Y\nB X\nC Z", 15}};
 
   for (const auto& [input, result] : inputs) {
     auto s = std::stringstream{input};
-    auto game = Game{s};
+    auto game = Game<Round1>{s};
     EXPECT_EQ(game.play(), result);
   }
 }

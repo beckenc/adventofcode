@@ -11,8 +11,10 @@ namespace fs = std::filesystem;
 
 int main(int argc, char **argv) {
   std::map<std::string_view, std::function<int(int, char **)> > day_fn;
-  day_fn.insert({"day1", [](int ac, char **av) { return aoc::day1::main(ac, av); }});
-  day_fn.insert({"day2", [](int ac, char **av) { return aoc::day2::main(ac, av); }});
+  day_fn.insert({"day1_1", [](int ac, char **av) { return aoc::day1::main_pt1(ac, av); }});
+  day_fn.insert({"day1_2", [](int ac, char **av) { return aoc::day1::main_pt2(ac, av); }});
+  day_fn.insert({"day2_1", [](int ac, char **av) { return aoc::day2::main_pt1(ac, av); }});
+  day_fn.insert({"day2_2", [](int ac, char **av) { return aoc::day2::main_pt2(ac, av); }});  
 
   auto app = fs::path(argv[0]).filename().string();
   if (auto fn = day_fn[app])

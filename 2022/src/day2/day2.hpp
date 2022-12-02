@@ -1,5 +1,9 @@
 #pragma once
+#include <algorithm>
+#include <iostream>
 #include <istream>
+#include <ranges>
+#include <sstream>
 #include <vector>
 
 namespace aoc::day2 {
@@ -13,13 +17,21 @@ inline auto to_shape(char c) {
 };
 
 enum class OUTCOME : unsigned { lost = 0, draw = 3, win = 6 };
+inline auto to_outcome(char c) {
+  return c == 'X'   ? OUTCOME::lost
+         : c == 'Y' ? OUTCOME::draw
+         : c == 'Z' ? OUTCOME::win
+                    : throw std::bad_cast();
+};
 
 class Round1 {
+  OUTCOME _outcome;
+  SHAPE _shape;
+
  public:
   typedef unsigned Score_t;
-  explicit Round1(char opponent, char me)
-      : Round1{to_shape(opponent), to_shape(me)} {}
-  explicit Round1(SHAPE opponent, SHAPE me)
+  Round1(char opponent, char me) : Round1{to_shape(opponent), to_shape(me)} {}
+  Round1(SHAPE opponent, SHAPE me)
       : _outcome{(opponent == me) ? OUTCOME::draw
                  : ((opponent == SHAPE::rock) && (me == SHAPE::paper)) ||
                          ((opponent == SHAPE::paper) &&
@@ -31,24 +43,52 @@ class Round1 {
   auto score() const {
     return static_cast<Score_t>(_shape) + static_cast<Score_t>(_outcome);
   }
-
- private:
-  SHAPE _shape;
-  OUTCOME _outcome;
 };
 
-class Game {
-  typedef std::vector<Round1> Rounds_t;
+class Round2 {
+  OUTCOME _outcome;
+  SHAPE _shape;
 
  public:
-  typedef Round1::Score_t Score_t;
-  explicit Game(std::istream &input);
-  auto play() -> Score_t;
+  typedef unsigned Score_t;
+  Round2(char opponent, char me) : Round2{to_shape(opponent), to_outcome(me)} {}
+  Round2(SHAPE opponent, OUTCOME outcome)
+      : _outcome{outcome},
+        _shape{(outcome == OUTCOME::draw) ? opponent
+               : (outcome == OUTCOME::win)
+                   ? ((opponent == SHAPE::paper)  ? SHAPE::sizzor
+                      : (opponent == SHAPE::rock) ? SHAPE::paper
+                                                  : SHAPE::rock)
+               : (opponent == SHAPE::paper) ? SHAPE::rock
+               : (opponent == SHAPE::rock)  ? SHAPE::sizzor
+                                            : SHAPE::paper} {}
+  auto score() const {
+    return static_cast<Score_t>(_shape) + static_cast<Score_t>(_outcome);
+  }
+};
+
+template <class Round>
+class Game {
+ public:
+  typedef Round::Score_t Score_t;
+  explicit Game(std::istream &input) {
+    auto puzzle = std::ranges::istream_view<char>(input);
+    std::ranges::for_each(puzzle.begin(), puzzle.end(),
+                          [opponent = '\0', this](char me) mutable {
+                            if (opponent) {
+                              _overall_score += Round{opponent, me}.score();
+                              me = '\0';
+                            }
+                            std::exchange(opponent, me);
+                          });
+  }
+
+  auto play() const { return _overall_score; }
 
  private:
   Score_t _overall_score = 0;
-  Rounds_t _rounds;
 };
 
-auto main(int argc, char **argv) -> int;
+auto main_pt1(int argc, char **argv) -> int;
+auto main_pt2(int argc, char **argv) -> int;
 }  // namespace aoc::day2

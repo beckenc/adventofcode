@@ -36,11 +36,13 @@ static auto part2(auto calories) {
   std::cout << "Part2:" << top_three_calories << "\n";
 }
 
-auto main(int argc, char **argv) -> int {
-  auto calories = count_calories(std::cin);
-  part1(calories);
-  part2(calories);
+auto main_pt1(int argc, char **argv) -> int {
+  part1(count_calories(std::cin));
+  return 0;
+}
 
+auto main_pt2(int argc, char **argv) -> int {
+  part2(count_calories(std::cin));
   return 0;
 }
 }  // namespace aoc::day1
