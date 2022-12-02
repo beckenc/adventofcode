@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
   auto app = fs::path(argv[0]).filename().string();
   if (auto fn = day_fn[app])
   {
-    std::cout << "Advent of code" << app << "\n";
+    std::cout << "Advent of code " << app << "\n";
     return fn(argc, argv);
   }
   std::cerr << "Invalid applet \"" << app << "\"...\n";

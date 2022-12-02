@@ -4,7 +4,7 @@ add_executable(
 )
 target_link_libraries(
   day2.test
-  day1
+  day2
   GTest::gtest_main
 )
 
