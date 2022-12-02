@@ -15,7 +15,11 @@ int main(int argc, char **argv) {
   day_fn.insert({"day2", [](int ac, char **av) { return aoc::day2::main(ac, av); }});
 
   auto app = fs::path(argv[0]).filename().string();
-  if (auto fn = day_fn[app]) return fn(argc, argv);
+  if (auto fn = day_fn[app])
+  {
+    std::cout << "Advent of code" << app << "\n";
+    return fn(argc, argv);
+  }
   std::cerr << "Invalid applet \"" << app << "\"...\n";
   return 1;
 }

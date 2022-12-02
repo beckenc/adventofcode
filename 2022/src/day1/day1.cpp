@@ -37,8 +37,6 @@ static auto part2(auto calories) {
 }
 
 auto main(int argc, char **argv) -> int {
-  std::cout << "Advent of code day#1" << std::endl;
-
   auto calories = count_calories(std::cin);
   part1(calories);
   part2(calories);
