@@ -6,4 +6,4 @@ namespace aoc::day1 {
 
 auto count_calories(std::istream &input) -> std::vector<unsigned>;
 auto main(int argc, char **argv) -> int;
-}  // namespace day1
+}  // namespace aoc::day1

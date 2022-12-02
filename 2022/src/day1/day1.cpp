@@ -2,8 +2,8 @@
 
 #include <algorithm>
 #include <iostream>
-#include <sstream>
 #include <numeric>
+#include <sstream>
 
 namespace aoc::day1 {
 
@@ -24,19 +24,17 @@ auto count_calories(std::istream &input) -> std::vector<unsigned> {
   return result;
 }
 
-static auto part1(auto calories)
-{
+static auto part1(auto calories) {
   std::ranges::sort(calories, std::ranges::greater());
   std::cout << "Part1:" << calories[0] << "\n";
 }
 
-static auto part2(auto calories)
-{
+static auto part2(auto calories) {
   std::ranges::sort(calories, std::ranges::greater());
-  auto top_three_calories = std::accumulate(calories.begin(), calories.begin() + 3, 0);
-  std::cout << "Part2:" << top_three_calories << "\n";  
+  auto top_three_calories =
+      std::accumulate(calories.begin(), calories.begin() + 3, 0);
+  std::cout << "Part2:" << top_three_calories << "\n";
 }
-
 
 auto main(int argc, char **argv) -> int {
   std::cout << "Advent of code day#1" << std::endl;
