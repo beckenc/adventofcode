@@ -14,10 +14,7 @@ class Rucksack {
   Rucksack() = default;
   explicit Rucksack(Compartment&& comp1, Compartment&& comp2);
 
-  auto get_shared_item() const {
-    auto dec = static_cast<unsigned>(_shared_item);
-    return std::make_tuple( _shared_item, std::islower(_shared_item) ? dec - 96 : dec - 38 );
-  }
+  auto get_shared_item() const -> std::tuple<char, unsigned>;
 
  private:
   std::array<Compartment, 2> _compartment;

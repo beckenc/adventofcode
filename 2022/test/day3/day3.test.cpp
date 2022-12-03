@@ -1,8 +1,8 @@
 #include "day3/day3.hpp"
 
+#include <iostream>
 #include <sstream>
 #include <vector>
-#include <iostream>
 
 #include "gtest/gtest.h"
 

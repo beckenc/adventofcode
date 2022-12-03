@@ -15,14 +15,20 @@ Rucksack::Rucksack(Compartment &&comp1, Compartment &&comp2)
       });
 };
 
+auto Rucksack::get_shared_item() const -> std::tuple<char, unsigned> {
+  auto dec = static_cast<unsigned>(_shared_item);
+  return std::make_tuple(_shared_item,
+                         std::islower(_shared_item) ? dec - 96 : dec - 38);
+}
+
 auto main_pt1(int argc, char **argv) -> int {
-  auto rucksaecke = std::ranges::istream_view<Rucksack>(std::cin);
   auto overall_prio = 0;
-  for (const auto& rucksack : rucksaecke) {
+  for (auto rucksaecke = std::ranges::istream_view<Rucksack>(std::cin);
+       const auto &rucksack : rucksaecke) {
     auto [shared, prio] = rucksack.get_shared_item();
     overall_prio += prio;
   }
-  std::cout << "Part1:" << overall_prio << std::endl;
+
   return 0;
 }
 
