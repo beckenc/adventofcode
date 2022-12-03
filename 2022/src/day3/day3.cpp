@@ -1,6 +1,30 @@
 #include "day3/day3.hpp"
 
 namespace aoc::day3 {
-auto main_pt1(int argc, char **argv) -> int { return 0; }
+
+Rucksack::Rucksack(Compartment &&comp1, Compartment &&comp2)
+    : _compartment{comp1, comp2} {
+  auto pos = std::all_of(
+      _compartment[0].begin(), _compartment[0].end(), [this](const char &c) {
+        if (auto pos = _compartment[1].find(c); pos == std::string::npos) {
+          return true;  // keep on searching
+        } else {
+          _shared_item = _compartment[1][pos];
+          return false;
+        }
+      });
+};
+
+auto main_pt1(int argc, char **argv) -> int {
+  auto rucksaecke = std::ranges::istream_view<Rucksack>(std::cin);
+  auto overall_prio = 0;
+  for (const auto& rucksack : rucksaecke) {
+    auto [shared, prio] = rucksack.get_shared_item();
+    overall_prio += prio;
+  }
+  std::cout << "Part1:" << overall_prio << std::endl;
+  return 0;
+}
+
 auto main_pt2(int argc, char **argv) -> int { return 0; }
 }  // namespace aoc::day3
