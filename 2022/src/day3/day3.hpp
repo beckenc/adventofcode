@@ -8,17 +8,36 @@
 
 namespace aoc::day3 {
 
+inline auto calc_item_prio(char c) {
+  auto dec = static_cast<unsigned>(c);
+  return std::make_tuple(c, std::islower(c) ? dec - 96 : dec - 38);
+}
+
 class Rucksack {
  public:
   typedef std::string Compartment;
   Rucksack() = default;
   explicit Rucksack(Compartment&& comp1, Compartment&& comp2);
 
-  auto get_shared_item() const -> std::tuple<char, unsigned>;
+  auto get_shared_item() const { return calc_item_prio(_shared_item); }
+  auto get_supplies() const { return _compartment[0] + _compartment[1]; }
 
  private:
   std::array<Compartment, 2> _compartment;
   char _shared_item = '\0';
+};
+
+class ElfGroup {
+ public:
+  typedef std::array<Rucksack, 3> Rucksacks;
+  ElfGroup() = default;
+  ElfGroup(Rucksacks&& rs);
+
+  auto get_badge_item() const { return calc_item_prio(_badge); }
+
+ private:
+  Rucksacks _rucksacks;
+  char _badge = '\0';
 };
 
 inline std::istream& operator>>(std::istream& is, Rucksack& rs) {
@@ -27,6 +46,20 @@ inline std::istream& operator>>(std::istream& is, Rucksack& rs) {
   if (!supply.empty())
     rs = Rucksack{supply.substr(0, supply.length() / 2),
                   supply.substr(supply.length() / 2)};
+  return is;
+}
+
+inline std::istream& operator>>(std::istream& is, ElfGroup& eg) {
+  auto rucksacks = ElfGroup::Rucksacks{};
+
+  std::for_each(rucksacks.begin(), rucksacks.end(), [&is](Rucksack& rs) {
+    auto supply = std::string{};
+    is >> supply;
+    if (!supply.empty())
+      rs = Rucksack{supply.substr(0, supply.length() / 2),
+                    supply.substr(supply.length() / 2)};
+  });
+  eg = ElfGroup{std::move(rucksacks)};
   return is;
 }
 
