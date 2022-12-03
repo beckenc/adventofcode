@@ -2,16 +2,23 @@
 
 namespace aoc::day3 {
 
+Rucksack::Rucksack(std::istream &is) {
+  auto supply = std::string{};
+  is >> supply;
+  if (!supply.empty())
+    *this = Rucksack{supply.substr(0, supply.length() / 2),
+                     supply.substr(supply.length() / 2)};
+}
+
 Rucksack::Rucksack(Compartment &&comp1, Compartment &&comp2)
     : _compartment{comp1, comp2} {
   std::all_of(
       _compartment[0].begin(), _compartment[0].end(), [this](const char &c) {
-        if (auto pos = _compartment[1].find(c); pos == std::string::npos) {
-          return true;  // keep on searching
-        } else {
-          _shared_item = _compartment[1][pos];
+        if (auto pos = _compartment[1].find(c); pos != std::string::npos) {
+          _shared_item = c;
           return false;
         }
+        return true;  // keep on searching
       });
 };
 

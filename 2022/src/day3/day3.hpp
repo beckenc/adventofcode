@@ -17,6 +17,7 @@ class Rucksack {
  public:
   typedef std::string Compartment;
   Rucksack() = default;
+  explicit Rucksack(std::istream& is);
   explicit Rucksack(Compartment&& comp1, Compartment&& comp2);
 
   auto get_shared_item() const { return calc_item_prio(_shared_item); }
@@ -41,24 +42,14 @@ class ElfGroup {
 };
 
 inline std::istream& operator>>(std::istream& is, Rucksack& rs) {
-  auto supply = std::string{};
-  is >> supply;
-  if (!supply.empty())
-    rs = Rucksack{supply.substr(0, supply.length() / 2),
-                  supply.substr(supply.length() / 2)};
+  rs = Rucksack{is};
   return is;
 }
 
 inline std::istream& operator>>(std::istream& is, ElfGroup& eg) {
   auto rucksacks = ElfGroup::Rucksacks{};
-
-  std::for_each(rucksacks.begin(), rucksacks.end(), [&is](Rucksack& rs) {
-    auto supply = std::string{};
-    is >> supply;
-    if (!supply.empty())
-      rs = Rucksack{supply.substr(0, supply.length() / 2),
-                    supply.substr(supply.length() / 2)};
-  });
+  std::for_each(rucksacks.begin(), rucksacks.end(),
+                [&is](Rucksack& rs) { rs = Rucksack{is}; });
   eg = ElfGroup{std::move(rucksacks)};
   return is;
 }
