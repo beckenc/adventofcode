@@ -6,6 +6,7 @@
 
 #include "day1/day1.hpp"
 #include "day2/day2.hpp"
+#include "day3/day3.hpp"
 
 namespace fs = std::filesystem;
 
@@ -14,7 +15,9 @@ int main(int argc, char **argv) {
   day_fn.insert({"day1_1", [](int ac, char **av) { return aoc::day1::main_pt1(ac, av); }});
   day_fn.insert({"day1_2", [](int ac, char **av) { return aoc::day1::main_pt2(ac, av); }});
   day_fn.insert({"day2_1", [](int ac, char **av) { return aoc::day2::main_pt1(ac, av); }});
-  day_fn.insert({"day2_2", [](int ac, char **av) { return aoc::day2::main_pt2(ac, av); }});  
+  day_fn.insert({"day2_2", [](int ac, char **av) { return aoc::day2::main_pt2(ac, av); }});
+  day_fn.insert({"day3_1", [](int ac, char **av) { return aoc::day3::main_pt1(ac, av); }});
+  day_fn.insert({"day3_2", [](int ac, char **av) { return aoc::day3::main_pt2(ac, av); }});
 
   auto app = fs::path(argv[0]).filename().string();
   if (auto fn = day_fn[app])

@@ -11,5 +11,6 @@ target_link_libraries(aoc
 PRIVATE
   day1
   day2
+  day3
   pthread
 )
