@@ -12,7 +12,6 @@ CrateStacks::CrateStacks(std::istream &is) {
   std::getline(is, line);
   for (_stacks.resize(((line.length() + 1) / 4)); !line.empty();
        std::getline(is, line)) {
-    if (line.empty()) break;  // empty line. End of the stacks model
     std::regex e("[A-Z]");
     std::for_each(std::sregex_iterator(line.begin(), line.end(), e),
                   std::sregex_iterator(), [this](auto &&match) {
