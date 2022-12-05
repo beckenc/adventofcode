@@ -17,6 +17,7 @@ class CrateStacks {
   explicit CrateStacks(std::istream& is);
   auto stacks() const { return _stacks; }
   void rearrange(Rearrangement&& rearrangement);
+  void rearrange_wo_reordering(Rearrangement&& rearrangement);  
   void print_stacks() const;
 
  private:
