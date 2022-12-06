@@ -1,22 +1,18 @@
 #include "day6/day6.hpp"
 
+#include <algorithm>
 #include <iostream>
 #include <ranges>
-#include <algorithm>
 #include <sstream>
 
 namespace aoc::day6 {
 
-auto search_pattern(const std::string_view input, unsigned pattern_len) -> std::optional<unsigned> {
-  for (auto i = 0; i < input.length(); ++i) {
-    std::string_view sequence = input.substr(i, pattern_len);
-
-    auto is_unique = std::ranges::all_of(
-        sequence.begin(), sequence.end(), [&sequence](auto &&c) {
-          return std::count(sequence.begin(), sequence.end(), c) == 1;
-        });
-    if (is_unique) return i + pattern_len;
-  }
+auto search_pattern(const std::string_view input, unsigned pattern_len)
+    -> std::optional<unsigned> {
+  for (auto i = 0; i < input.length(); ++i)
+    if (auto seq = input.substr(i, pattern_len); std::ranges::all_of(
+            seq, [&seq](auto &&c) { return std::ranges::count(seq, c) == 1; }))
+      return i + pattern_len;
   return {};
 };
 
