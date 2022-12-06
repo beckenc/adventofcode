@@ -9,10 +9,12 @@ namespace aoc::day6 {
 
 auto search_pattern(const std::string_view input, unsigned pattern_len)
     -> std::optional<unsigned> {
-  for (auto i = 0; i < input.length(); ++i)
-    if (auto seq = input.substr(i, pattern_len); std::ranges::all_of(
+  for (auto i = 0; i < input.length(); ++i) {
+    if (auto seq = input | std::views::drop(i) | std::views::take(pattern_len);
+        std::ranges::all_of(
             seq, [&seq](auto &&c) { return std::ranges::count(seq, c) == 1; }))
       return i + pattern_len;
+  }
   return {};
 };
 
