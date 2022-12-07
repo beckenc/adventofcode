@@ -1,1 +1,1 @@
-add_library(day7 day7.cpp)
+add_library(day7 day7_2.cpp)

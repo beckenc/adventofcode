@@ -9,6 +9,7 @@
 #include <tuple>
 #include <vector>
 
+
 namespace aoc::day7 {
 
 struct Line : public std::string {};
@@ -83,6 +84,7 @@ auto main_pt1(int argc, char** argv) -> int {
       total_dir_size += tree[subdir].second;
     }
     if (total_dir_size <= 100000) {
+      std::cout << total_dir_size << std::endl;
       result += total_dir_size;
     }
   }
