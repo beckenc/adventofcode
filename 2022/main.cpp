@@ -30,6 +30,7 @@ int main(int argc, char **argv) {
   day_fn.insert({"day6_2", [](int ac, char **av) { return aoc::day6::main_pt2(ac, av); }});
   day_fn.insert({"day7_1", [](int ac, char **av) { return aoc::day7::main_pt1(ac, av); }});
   day_fn.insert({"day7_2", [](int ac, char **av) { return aoc::day7::main_pt2(ac, av); }});
+  day_fn.insert({"aoc", [](int ac, char **av) { return aoc::day7::main_pt1(ac, av); }});
 
   auto app = fs::path(argv[0]).filename().string();
   if (auto fn = day_fn[app])
