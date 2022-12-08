@@ -32,7 +32,7 @@ class Grid : public std::vector<std::vector<Tree>> {
 
   auto get_column(unsigned col) const {
     std::vector<unsigned> column;
-    std::for_each(begin(), end(), [&column, col](auto&& row) {
+    std::ranges::for_each(*this, [&column, col](auto&& row) {
       column.emplace_back(row[col]);
     });
     return column;
@@ -50,13 +50,13 @@ class Grid : public std::vector<std::vector<Tree>> {
     };
 
     // to the right
-    auto c = std::ranges::count_if(row.begin() + icol + 1, row.end(), count_score);
+    auto c = std::ranges::count_if(row | std::views::drop(icol + 1), count_score);
     // to the left
-    c *= std::ranges::count_if(row.rbegin() + (col.size() - icol), row.rend(), count_score);
+    c *= std::ranges::count_if(row | std::views::reverse | std::views::drop(col.size() - icol), count_score);
     // to the bottom
-    c *= std::ranges::count_if(col.begin() + irow + 1, col.end(), count_score);
+    c *= std::ranges::count_if(col | std::views::drop(irow + 1), count_score);
     // to the top
-    c *= std::ranges::count_if(col.rbegin() + (row.size() - irow), col.rend(), count_score);
+    c *= std::ranges::count_if(col | std::views::reverse | std::views::drop(row.size() - irow), count_score);
 
     return c;
   }
