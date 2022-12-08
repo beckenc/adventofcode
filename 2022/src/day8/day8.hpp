@@ -25,9 +25,12 @@ class Grid : public std::vector<std::vector<Tree>> {
         });
   }
 
-  auto get_row(unsigned row) { return at(row); }
+ public:
+  auto get_row(unsigned row) const { 
+    return at(row);
+  }
 
-  auto get_column(unsigned col) {
+  auto get_column(unsigned col) const {
     std::vector<unsigned> column;
     std::for_each(begin(), end(), [&column, col](auto&& row) {
       column.emplace_back(row[col]);
@@ -35,7 +38,39 @@ class Grid : public std::vector<std::vector<Tree>> {
     return column;
   }
 
- public:
+  auto get_score(unsigned irow, unsigned icol) const {
+    auto row = get_row(irow);
+    auto col = get_column(icol);
+    auto considered_tree = at(irow).at(icol);
+
+    auto count_score = [considered_tree, blocked = false](Tree tree) mutable {
+      if (blocked) return false;
+      if (tree >= considered_tree) blocked = true;
+      return true;
+    };
+
+    // to the right
+    auto c = std::ranges::count_if(row.begin() + icol + 1, row.end(), count_score);
+    // to the left
+    c *= std::ranges::count_if(row.rbegin() + (col.size() - icol), row.rend(), count_score);
+    // to the bottom
+    c *= std::ranges::count_if(col.begin() + irow + 1, col.end(), count_score);
+    // to the top
+    c *= std::ranges::count_if(col.rbegin() + (row.size() - irow), col.rend(), count_score);
+
+    return c;
+  }
+
+  auto get_high_score() const {
+    unsigned high_score = 0;
+    for (auto irow = 0; irow < size(); ++irow)
+      for (auto icol = 0; icol < at(irow).size(); ++icol)
+        if (auto c = get_score(irow, icol); c > high_score) {
+          high_score = c;
+        }
+    return high_score;
+  }
+
   auto get_visibilities() {
     std::set<std::pair<unsigned, unsigned>> visibilites;
 
