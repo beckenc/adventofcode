@@ -117,6 +117,10 @@ class Tail : public Knot {
     ) {
       return;  // keep position
     }
+    else
+    {
+      
+    }
 
     if (hy == ty) {
       if (hx > tx) {
@@ -138,19 +142,19 @@ class Tail : public Knot {
 
     } else if (hy > (ty + 1)) {
       _pos = {hx, hy - 1};  // follow up     ....H.
-                            //               ....T.
+                            //               ....x.
                             //               ...T.T
     } else if (hy < (ty - 1)) {
       _pos = {hx, hy + 1};  // follow down   ..T.T.
-                            //               ...T..
+                            //               ...x..
                             //               ...H..
     } else if (hx < (tx - 1)) {
       _pos = {hx + 1, hy};  // follow left   ....T.
-                            //               ..HT..
+                            //               ..Hx..
                             //               ....T.
     } else if (hx > (tx + 1)) {
       _pos = {hx - 1, hy};  // follow right  ..T...
-                            //               ...TH.
+                            //               ...xH.
                             //               ..T...      
     } else {
       throw std::runtime_error("missing case");
