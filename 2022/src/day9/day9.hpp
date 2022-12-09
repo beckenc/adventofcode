@@ -6,11 +6,15 @@
 #include <set>
 #include <tuple>
 #include <vector>
+#include <cassert>
 
 namespace aoc::day9 {
 
 enum class Direction : char { up = 'U', down = 'D', left = 'L', right = 'R' };
 
+/**
+ * 
+ */
 class Motion {
  public:
   typedef unsigned step_count_t;
@@ -26,6 +30,9 @@ class Motion {
   motion_t _motion;
 };
 
+/**
+ * 
+ */
 class Motions {
  public:
   typedef std::vector<Motion> motions_t;
@@ -82,23 +89,29 @@ class Tail : public Knot {
  public:
   auto follow(Head head) {
     auto [hx, hy] = head.pos().get();
-    auto [tx, ty] = pos().get();
+    auto [tx, ty] = _pos.get();
 
     if (((hy == ty) && (hx == tx)) ||              // H
-                                                   //
+
         ((hy == ty) && (hx == (tx + 1))) ||        // TH
-                                                   //
+
         ((hy == ty) && (hx == (tx - 1))) ||        // HT
+
                                                    // H
         ((hy == (ty + 1)) && (hx == tx)) ||        // T
+
                                                    // T
         ((hy == (ty - 1)) && (hx == tx)) ||        // H
+
                                                    //  T
         ((hy == (ty - 1)) && (hx == (tx - 1))) ||  // H
+
                                                    // T
         ((hy == (ty - 1)) && (hx == (tx + 1))) ||  //  H
+
                                                    //  H
         ((hy == (ty + 1)) && (hx == (tx + 1))) ||  // T
+
                                                    // H
         ((hy == (ty + 1)) && (hx == (tx - 1)))     //  T
     ) {
@@ -110,21 +123,37 @@ class Tail : public Knot {
         _pos = {hx - 1, hy};  // follow right
       } else if (hx < tx) {
         _pos = {hx + 1, hy};  // follow left
+      } else {
+        throw std::runtime_error("missing case");        
       }
+
     } else if (hx == tx) {
       if (hy > ty) {
         _pos = {hx, hy - 1};  // follow up
       } else if (hy < ty) {
         _pos = {hx, hy + 1};  // follow down
+      } else {
+        throw std::runtime_error("missing case");        
       }
+
     } else if (hy > (ty + 1)) {
-      _pos = {hx, hy - 1};  // follow up
+      _pos = {hx, hy - 1};  // follow up     ....H.
+                            //               ....T.
+                            //               ...T.T
     } else if (hy < (ty - 1)) {
-      _pos = {hx, hy + 1};  // follow down
+      _pos = {hx, hy + 1};  // follow down   ..T.T.
+                            //               ...T..
+                            //               ...H..
     } else if (hx < (tx - 1)) {
-      _pos = {hx + 1, hy};  // follow left
+      _pos = {hx + 1, hy};  // follow left   ....T.
+                            //               ..HT..
+                            //               ....T.
     } else if (hx > (tx + 1)) {
-      _pos = {hx - 1, hy};  // follow right
+      _pos = {hx - 1, hy};  // follow right  ..T...
+                            //               ...TH.
+                            //               ..T...      
+    } else {
+      throw std::runtime_error("missing case");
     }
   }
 
