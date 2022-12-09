@@ -47,8 +47,8 @@ class Motions {
 
 class Position {
  public:
-  typedef unsigned x_t;
-  typedef unsigned y_t;
+  typedef signed x_t;
+  typedef signed y_t;
   typedef std::pair<x_t, y_t> position_t;
 
   Position() = default;
@@ -116,10 +116,6 @@ class Tail : public Knot {
         ((hy == (ty + 1)) && (hx == (tx - 1)))     //  T
     ) {
       return;  // keep position
-    }
-    else
-    {
-      
     }
 
     if (hy == ty) {
