@@ -84,22 +84,26 @@ class Knot {
 class Grid {
  public:
   typedef std::set<Position::position_t> grid_t;
-  typedef std::tuple<Position::x_t, Position::y_t> dimension_t;
+  typedef std::tuple<std::tuple<Position::x_t, Position::x_t>, std::tuple<Position::y_t, Position::y_t>> dimension_t;
   auto get() const { return _grid; }
   auto dimension() const { return _dimension; }
   auto visit(Position pos) {
     auto coordinates = pos.get();
     auto& [dx, dy] = _dimension;
+    auto& [dx1, dx2] = dx;
+    auto& [dy1, dy2] = dy;
     auto& [cx, cy] = coordinates;
-    if (dx < cx) dx = cx;
-    if (dy < cy) dy = cy;
+    if (dx1 > cx) dx1 = cx;    
+    if (dx2 < cx) dx2 = cx;
+    if (dy1 > cy) dy1 = cy;
+    if (dy2 < cy) dy2 = cy;    
     _grid.insert(coordinates);
   }
   auto visited_fields() const { return _grid.size(); }
 
  private:
   grid_t _grid;
-  dimension_t _dimension = {0, 0};
+  dimension_t _dimension = {{0, 0},{0, 0}};
 };
 
 inline std::istream& operator>>(std::istream& is, Direction& direction) {
@@ -133,15 +137,19 @@ inline std::ostream& operator<<(std::ostream& os, const Motions& motions) {
 
 inline std::ostream& operator<<(std::ostream& os, Grid& grid) {
   auto [dx, dy] = grid.dimension();
-  do {
-    for (auto x = 0; x <= dx; ++x) {
-      if (auto pos = grid.get().find({x, dy}); pos != grid.get().end())
+  auto [dx1, dx2] = dx;
+  auto [dy1, dy2] = dy;
+
+  for(auto y = dy2; y >= dy1; --y)
+  {
+    for (auto x = dx1; x <= dx2; ++x) {
+      if (auto pos = grid.get().find({x, y}); pos != grid.get().end())
         os << "#";
       else
-        os << ".";
+        os << ".";      
     }
-    os << std::endl;
-  } while (dy--);
+    std::cout << std::endl;
+  }
   return os;
 }
 

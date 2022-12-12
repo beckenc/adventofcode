@@ -9,47 +9,23 @@ void Knot::follow(Knot head) {
   auto [hx, hy] = head.pos().get();
   auto [tx, ty] = _pos.get();
 
-  if (!((abs(hy - ty) > 1) || (abs(hx - tx) > 1))) {
+  auto ydiff = hy - ty;
+  auto xdiff = hx - tx;
+
+  if (!(abs(ydiff) > 1 || abs(xdiff) > 1)) {
     return;  // keep position
   }
 
-  if (hy == ty) {
-    if (hx > tx) {
-      _pos = {hx - 1, hy};  // follow right
-    } else if (hx < tx) {
-      _pos = {hx + 1, hy};  // follow left
-    } else {
-      throw std::runtime_error("missing case");
-    }
+  if (ydiff > 1)  // move up
+    ydiff = 1;
+  else if (ydiff < -1)  // move down
+    ydiff = -1;
+  if (xdiff > 1)  // move right
+    xdiff = 1;
+  else if (xdiff < -1)  // move left
+    xdiff = -1;
 
-  } else if (hx == tx) {
-    if (hy > ty) {
-      _pos = {hx, hy - 1};  // follow up
-    } else if (hy < ty) {
-      _pos = {hx, hy + 1};  // follow down
-    } else {
-      throw std::runtime_error("missing case");
-    }
-
-  } else if (hy > (ty + 1)) {
-    _pos = {hx, hy - 1};  // follow up     ....H.
-                          //               ....x.
-                          //               ...T.T
-  } else if (hy < (ty - 1)) {
-    _pos = {hx, hy + 1};  // follow down   ..T.T.
-                          //               ...x..
-                          //               ...H..
-  } else if (hx < (tx - 1)) {
-    _pos = {hx + 1, hy};  // follow left   ....T.
-                          //               ..Hx..
-                          //               ....T.
-  } else if (hx > (tx + 1)) {
-    _pos = {hx - 1, hy};  // follow right  ..T...
-                          //               ...xH.
-                          //               ..T...
-  } else {
-    throw std::runtime_error("missing case");
-  }
+  _pos = { tx + xdiff, ty + ydiff };
 }
 
 auto main_pt1(int argc, char **argv) -> int {
@@ -69,7 +45,7 @@ auto main_pt1(int argc, char **argv) -> int {
       tail_places.visit(tail.pos());
     }
   });
-  // std::cout << "tail:\n" << tail_places << std::endl;
+  //std::cout << "tail:\n" << tail_places << std::endl;
   std::cout << "Part1:" << tail_places.visited_fields() << std::endl;
 
   return 0;
@@ -84,22 +60,20 @@ auto main_pt2(int argc, char **argv) -> int {
   std::cout << motions << std::endl;
 
   Grid tail_places;
-  std::ranges::for_each(
-      motions.get(), [head = Knot{}, knots = std::vector<Knot>{9},
-                      &tail_places](Motion motion) mutable {
-        for (auto num_steps = 0; num_steps < motion.num_steps(); ++num_steps) {
-          head.move(Motion::motion_t{motion.direction(), 1});
+  std::ranges::for_each(motions.get(), [knots = std::vector<Knot>{10},
+                                        &tail_places](Motion motion) mutable {
+    for (auto num_steps = 0; num_steps < motion.num_steps(); ++num_steps) {
+      auto &head = knots.front();
+      head.move(Motion::motion_t{motion.direction(), 1});
 
-          auto tail = head;
-          for(auto& knot : knots)
-          {
-            knot.follow(tail);
-            tail = knot;
-          }
-
-          tail_places.visit(tail.pos());
-        }
-      });
+      auto tail = head;
+      for (auto &knot : knots) {
+        knot.follow(tail);
+        tail = knot;
+      }
+      tail_places.visit(knots.back().pos());
+    }
+  });
   // std::cout << "tail:\n" << tail_places << std::endl;
   std::cout << "Part2:" << tail_places.visited_fields() << std::endl;
 
