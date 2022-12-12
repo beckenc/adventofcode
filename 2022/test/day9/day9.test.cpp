@@ -21,8 +21,8 @@ TEST(SimpleTestPt1, day9) {
 
   std::cout << motions << std::endl;
 
-  Head head;
-  Tail tail;
+  Knot head;
+  Knot tail;
   Grid head_places;
   Grid tail_places;
   std::ranges::for_each(
