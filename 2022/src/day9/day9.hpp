@@ -148,7 +148,7 @@ inline std::ostream& operator<<(std::ostream& os, Grid& grid) {
       else
         os << ".";      
     }
-    std::cout << std::endl;
+    os << std::endl;
   }
   return os;
 }
