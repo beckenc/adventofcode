@@ -17,7 +17,7 @@ struct Heightmap {
 
   map_t _map;
   pos_t _spos;  // start position
-  pos_t _epos;  // start position
+  pos_t _epos;  // end position
   std::vector<pos_t> _alt_spos;
 
   auto create(std::istream&& is) {
