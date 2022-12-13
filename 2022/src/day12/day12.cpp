@@ -3,12 +3,13 @@
 #include <algorithm>
 #include <cassert>
 #include <iostream>
+#include <limits>
 #include <queue>
 #include <ranges>
 
 namespace aoc::day12 {
 
-void Heightmap::search() {
+void Heightmap::search(pos_t spos) {
   constexpr auto can_step = [](char c1, char c2) {
     return (c1 >= c2) ? true : (c1 + 1) == c2;
   };
@@ -56,8 +57,8 @@ void Heightmap::search() {
   };
 
   std::queue<Heightmap::pos_t> queue;
-  queue.push(_spos);
-  mark_visited(_spos, 0);
+  queue.push(spos);
+  mark_visited(spos, 0);
 
   while (!queue.empty()) {
     auto square = queue.front();
@@ -67,7 +68,9 @@ void Heightmap::search() {
     for (auto neighbor : neighbors(square)) {
       if (can_step(square_value(square), square_value(neighbor))) {
         assert(step_cnt.has_value());
-        if (mark_visited(neighbor, step_cnt.value() + 1)) queue.push(neighbor);
+        if (mark_visited(neighbor, step_cnt.value() + 1)) {  //
+          queue.push(neighbor);
+        }
       }
     }
   }
@@ -78,7 +81,7 @@ auto main_pt1(int argc, char **argv) -> int {
 
   auto heightmap = Heightmap{};
   heightmap.create(std::move(std::cin));
-  heightmap.search();
+  heightmap.search(heightmap._spos);
 
   auto [row, col] = heightmap._epos;
   auto square = heightmap._map[row][col];
@@ -90,5 +93,28 @@ auto main_pt1(int argc, char **argv) -> int {
   return 0;
 }
 
-auto main_pt2(int argc, char **argv) -> int { return 0; }
+auto main_pt2(int argc, char **argv) -> int {
+  auto input = std::ranges::istream_view<std::string>(std::cin);
+
+  auto org_heightmap = Heightmap{};
+  org_heightmap.create(std::move(std::cin));
+
+  auto min_steps = std::numeric_limits<unsigned>::max();
+  for (auto spos : org_heightmap._alt_spos) {
+    auto heightmap = org_heightmap;
+
+    heightmap.search(spos);
+
+    auto [row, col] = heightmap._epos;
+    auto square = heightmap._map[row][col];
+    assert(std::get<0>(square) == 'E');
+
+    if (auto steps = std::get<1>(square);
+        steps && steps.value() < min_steps)  //
+      min_steps = steps.value();
+  }
+  std::cout << "Part#2: " << min_steps << std::endl;
+
+  return 0;
+}
 }  // namespace aoc::day12

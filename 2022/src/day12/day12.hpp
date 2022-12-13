@@ -18,6 +18,7 @@ struct Heightmap {
   map_t _map;
   pos_t _spos;  // start position
   pos_t _epos;  // start position
+  std::vector<pos_t> _alt_spos;
 
   auto create(std::istream&& is) {
     std::ranges::for_each(
@@ -30,10 +31,11 @@ struct Heightmap {
                 auto square = square_t{c, std::nullopt};
                 if (c == 'S') {
                   _spos = std::make_tuple(row, col);
-                  std::cout << "S: " << row << "," << col << std::endl;
+                  _alt_spos.emplace_back(_spos);
+                } else if (c == 'a') {
+                  _alt_spos.emplace_back(std::make_tuple(row, col));
                 } else if (c == 'E') {
                   _epos = std::make_tuple(row, col);
-                  std::cout << "E: " << row << "," << col << std::endl;
                 }
                 ++col;
                 return square;
@@ -42,7 +44,7 @@ struct Heightmap {
         });
   }
 
-  void search();
+  void search(pos_t spos);
 };
 
 auto main_pt1(int argc, char** argv) -> int;

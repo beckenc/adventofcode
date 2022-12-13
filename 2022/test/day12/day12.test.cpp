@@ -21,7 +21,7 @@ TEST(SimpleTestPt1, day12) {
     heightmap.create(std::istringstream{line});
   });
 
-  heightmap.search();
+  // heightmap.search();
 }
 
 TEST(SimpleTestPt2, day12) {}
