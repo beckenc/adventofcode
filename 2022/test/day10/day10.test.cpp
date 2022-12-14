@@ -8,7 +8,7 @@
 
 namespace aoc::day10 {
 
-TEST(SimpleTestPt1, day10) {
+TEST(SimpleTest, day10) {
   auto input = std::vector<std::string>{
       "addx 15",  "addx -11", "addx 6",   "addx -3",  "addx 5",   "addx -1",
       "addx -8",  "addx 13",  "addx 4",   "noop",     "addx -1",  "addx 5",
@@ -36,15 +36,18 @@ TEST(SimpleTestPt1, day10) {
       "addx 1",   "addx 2",   "addx 2",   "addx -6",  "addx -11", "noop",
       "noop",     "noop"};
 
-  auto prog = CPU::prog_t{};
-  std::ranges::for_each(input, [&prog](auto&& line) {
-    auto inst = Instruction{};
-    std::istringstream{line} >> inst;
-    prog.emplace_back(std::move(inst));
-  });
+  auto read_in_prog = [](auto&& input) {
+    auto prog = CPU::prog_t{};
+    std::ranges::for_each(input, [&prog](auto&& line) {
+      auto inst = Instruction{};
+      std::istringstream{line} >> inst;
+      prog.emplace_back(std::move(inst));
+    });
+    return prog;
+  };
 
   auto cpu = CPU{};
-  cpu.load_programm(std::move(prog));
+  cpu.load_programm(read_in_prog(input));
 
   auto signal_strength = 0;
   for (auto cycle = 0; !cpu.eop(); ++cycle) {
@@ -60,8 +63,15 @@ TEST(SimpleTestPt1, day10) {
     ++cpu;
   }
   EXPECT_EQ(signal_strength, 13140);
-}
 
-TEST(SimpleTestPt2, day10) {}
+
+  auto crt = CRT{std::cout};
+  crt.load_programm(read_in_prog(input));
+
+  for (auto cycle = 0; !crt.eop(); ++cycle) {
+    ++crt;
+  }
+
+}
 
 }  // namespace aoc::day10

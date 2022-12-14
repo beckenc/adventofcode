@@ -36,6 +36,19 @@ auto main_pt1(int argc, char **argv) -> int {
 }
 
 auto main_pt2(int argc, char **argv) -> int {
+  auto prog = CPU::prog_t{};
+
+  std::ranges::for_each(std::ranges::istream_view<Instruction>(std::cin), [&prog](auto&& instruction){
+    prog.emplace_back(std::forward<Instruction>(instruction));
+  });  
+
+  auto crt = CRT{std::cout};
+  crt.load_programm(std::move(prog));
+
+  for (auto cycle = 0; !crt.eop(); ++cycle) {
+    ++crt;
+  }
+
   return 0;
 }
 }  // namespace aoc::day10

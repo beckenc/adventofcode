@@ -19,9 +19,13 @@ struct CPU {
   unsigned _cycle{0};
   int _regX{1};
   prog_t _prog{};
+  int _maxRegX{1};
+  int _minRegX{1};
 
   auto load_programm(prog_t&& prog) {
     _prog = std::forward<prog_t>(prog);
+    _regX = 1;
+    _cycle = 0;
     _pc = 0;
     _inst_cycle = static_cast<unsigned>(_prog[_pc]._command);
   }
@@ -41,6 +45,8 @@ struct CPU {
 
     if (--_inst_cycle == 0) {
       _regX += param().value_or(0);
+      if (_regX > _maxRegX) _maxRegX = _regX;
+      if (_regX < _minRegX) _minRegX = _regX;
       load();
     }
 
@@ -51,6 +57,40 @@ struct CPU {
  private:
   unsigned _pc{0};
   unsigned _inst_cycle{0};
+};
+
+struct CRT {
+  signed width = 40;
+
+  explicit CRT(std::ostream& os) : _os{os} {};
+
+  auto load_programm(CPU::prog_t&& prog) {
+    _cycle = 0;
+    _cpu.load_programm(std::forward<CPU::prog_t>(prog));
+  }
+
+  auto eop() const { return _cpu.eop(); }
+
+  auto update_screen() {
+    auto sprite_min = _cpu._regX - 1;
+    auto sprite_max = _cpu._regX - 1 + 2;
+    auto col = _cycle % width;
+    if (!col) _os << "\n";
+    auto pixel = ((col >= sprite_min) && (col <= sprite_max)) ? "#" : ".";
+    _os << pixel;
+  }
+
+  CRT& operator++() {
+    update_screen();
+    ++_cycle;
+    ++_cpu;
+    return *this;
+  }
+
+ private:
+  CPU _cpu;
+  std::ostream& _os;
+  signed _cycle{0};
 };
 
 inline std::istream& operator>>(std::istream& is, Command& command) {
