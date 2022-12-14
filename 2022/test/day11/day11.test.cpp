@@ -17,7 +17,9 @@ TEST(SimpleTestPt1, day11) {
         {2, {79, 60, 97}, Operation::mul, std::nullopt, Monkey::test_t{13, 1, 3}},
         {3, {74}, Operation::add, 3, Monkey::test_t{17, 0, 1}}
       };
-  MonkeyGame{participants}.play(20).print_result(std::cout);
+  MonkeyGame{participants}.play_game1(20).print_result(std::cout);
+  std::cout << std::endl;
+  MonkeyGame{participants}.play_game2(10000).print_result(std::cout);  
 }
 
 TEST(SimpleTestPt2, day11) {}

@@ -53,7 +53,7 @@ static auto participants = MonkeyGame::Participants_t{
     //   Test: divisible by 7
     //     If true: throw to monkey 5
     //     If false: throw to monkey 4
-    {6, {84, 98, 78, 85}, Operation::mul, std::nullopt, Monkey::test_t{7, 5, 4}}, 
+    {6, {84, 98, 78, 85}, Operation::mul, std::nullopt, Monkey::test_t{7, 5, 4}},
     // Monkey 7:
     //   Starting items: 98, 89, 78, 73, 71
     //   Operation: new = old + 4
@@ -62,10 +62,13 @@ static auto participants = MonkeyGame::Participants_t{
     //     If false: throw to monkey 2
     {7, {98, 89, 78, 73, 71}, Operation::add, 4, Monkey::test_t{2, 3, 2}}};
 
-auto main_pt1(int argc, char **argv) -> int { 
-    MonkeyGame{participants}.play(20).print_result(std::cout);
-    return 0; 
+auto main_pt1(int argc, char **argv) -> int {
+  MonkeyGame{participants}.play_game1(20).print_result(std::cout);
+  return 0;
 }
 
-auto main_pt2(int argc, char **argv) -> int { return 0; }
+auto main_pt2(int argc, char **argv) -> int {
+  MonkeyGame{participants}.play_game1(10000).print_result(std::cout);
+  return 0;
+}
 }  // namespace aoc::day11

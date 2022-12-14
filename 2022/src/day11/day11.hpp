@@ -2,7 +2,9 @@
 #include <algorithm>
 #include <iostream>
 #include <list>
+#include <numeric>
 #include <optional>
+#include <ranges>
 #include <tuple>
 #include <vector>
 
@@ -14,7 +16,7 @@ class Monkey {
  public:
   typedef int monkey_t;
   typedef int divider_t;
-  typedef int worry_level_t;
+  typedef int64_t worry_level_t;
   typedef std::optional<int> operand_t;
   typedef std::tuple<divider_t, monkey_t, monkey_t> test_t;
   typedef std::list<worry_level_t> starting_items_t;
@@ -64,6 +66,7 @@ class Monkey {
   auto its_me(monkey_t monkey) const { return _monkey == monkey; }
   auto num_inspections() const { return _inspections; }
   auto id() const { return _monkey; }
+  auto divider() const { return std::get<0>(_test); }
 
  private:
   monkey_t _monkey;
@@ -71,7 +74,7 @@ class Monkey {
   Operation _op;
   operand_t _operand;
   test_t _test;
-  int _inspections;
+  uint64_t _inspections;
 };
 
 class MonkeyGame {
@@ -80,9 +83,25 @@ class MonkeyGame {
 
   MonkeyGame(Participants_t participants) : _participants{participants} {}
 
-  auto play(auto rounds) {
-    for (auto i = 0; i < rounds; ++i) {
-      play_one_round();
+  auto lcm() -> uint64_t {
+    auto lcm = 1;
+    auto do_lcm = [&lcm](auto& monkey) {
+      lcm = std::lcm(lcm, monkey.divider());
+    };
+    std::ranges::for_each(_participants, do_lcm);
+    return lcm;
+  }
+
+  auto play_game1(auto rounds) {
+    for (auto i : std::views::iota(0, rounds)) {
+      play_game1();
+    }
+    return *this;
+  }
+
+  auto play_game2(auto rounds) {
+    for (auto i : std::views::iota(0, rounds)) {
+      play_game2();
     }
     return *this;
   }
@@ -95,11 +114,24 @@ class MonkeyGame {
   }
 
  private:
-  auto play_one_round() {
+  auto play_game1() {
     std::ranges::for_each(_participants, [this](auto&& monkey) {
       while (auto item = monkey.inspect()) {
         auto worry_level = monkey.operation(*item);
         worry_level = monkey.get_bored(worry_level);
+        auto recipient_id = monkey.throw_away(worry_level);
+        auto recipient = std::ranges::find_if(
+            _participants,
+            [recipient_id](auto&& m) { return m.its_me(recipient_id); });
+        recipient->enqueue_worry_level(worry_level);
+      }
+    });
+  }
+  auto play_game2() {
+    std::ranges::for_each(_participants, [this](auto&& monkey) {
+      while (auto item = monkey.inspect()) {
+        uint64_t worry_level = monkey.operation(*item);
+        worry_level %= lcm();
         auto recipient_id = monkey.throw_away(worry_level);
         auto recipient = std::ranges::find_if(
             _participants,
