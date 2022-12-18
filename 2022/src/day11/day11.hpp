@@ -15,8 +15,8 @@ enum class Operation { add, mul };
 class Monkey {
  public:
   typedef int monkey_t;
-  typedef int divider_t;
-  typedef int64_t worry_level_t;
+  typedef uint64_t divider_t;
+  typedef uint64_t worry_level_t;
   typedef std::optional<int> operand_t;
   typedef std::tuple<divider_t, monkey_t, monkey_t> test_t;
   typedef std::list<worry_level_t> starting_items_t;
@@ -46,7 +46,7 @@ class Monkey {
 
   auto throw_away(worry_level_t worry_level) {
     auto [divider, monkey_true, monkey_false] = _test;
-    if (0 == (worry_level % divider)) {
+    if (static_cast<uint64_t>(0) == (worry_level % divider)) {
       return monkey_true;
     }
     return monkey_false;
