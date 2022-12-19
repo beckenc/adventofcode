@@ -21,7 +21,9 @@ auto List::extract(std::string_view sv) -> std::string_view {
   if (sv.front() == '[') {
     list.emplace_back(List{});
     sv = list.back().child().extract(sv.substr(sv[1] == ']' ? 2 : 1));
-    sv = extract(sv.substr(1));
+    if (!sv.empty()) {
+      sv = extract(sv.substr(1));
+    }
   } else if (std::isdigit(sv.front())) {
     int i;
     std::stringstream{} << sv >> i;
@@ -30,11 +32,14 @@ auto List::extract(std::string_view sv) -> std::string_view {
   }
   return sv;
 }
-
-auto List::compare(List right) -> int {
-  if (list.empty() && right.list.empty()) return 0;
-  else if (list.empty() && !right.list.empty()) return -1;
-  else if (!list.empty() && right.list.empty()) return 1;
+auto List::compare(List& right) -> int {
+  if (list.empty() && right.list.empty()) {
+    return 0;
+  } else if (list.empty() && !right.list.empty()) {
+    return -1;
+  } else if (!list.empty() && right.list.empty()) {
+    return 1;
+  }
 
   auto result = 0;
   if (list.front().is_int()) {
@@ -54,7 +59,7 @@ auto List::compare(List right) -> int {
     }
   }
 
-  if (result == 0) {
+  if (result == 0 && !list.empty() && !right.list.empty()) {
     list.pop_front();
     right.list.pop_front();
     result = compare(right);
@@ -77,9 +82,8 @@ auto main_pt1(int argc, char** argv) -> int {
   std::ranges::for_each(
       std::ranges::istream_view<PacketPair>(std::cin),
       [&result, i = 1](auto&& pair) mutable {
-        if (compare_lists(pair.lists.first, pair.lists.second)) {
-          result += i;
-        }
+        result +=
+            compare_lists(pair.lists.first, pair.lists.second) != 0 ? i : 0;
         ++i;
       });
 
@@ -87,5 +91,19 @@ auto main_pt1(int argc, char** argv) -> int {
   return 0;
 }
 
-auto main_pt2(int argc, char** argv) -> int { return 0; }
+auto main_pt2(int argc, char** argv) -> int {
+  auto input = std::vector<std::string>{"[[2]]", "[[6]]"};
+  std::ranges::for_each(std::ranges::istream_view<PacketPair>(std::cin),
+                        [&input](auto&& pair) mutable {
+                          input.emplace_back(pair.lists.first);
+                          input.emplace_back(pair.lists.second);
+                        });
+  std::ranges::sort(input, compare_lists);
+
+  auto n2 = std::distance(input.begin(), std::ranges::find(input, "[[2]]"));
+  auto n6 = std::distance(input.begin(), std::ranges::find(input, "[[6]]"));
+
+  std::cout << "\nPart2: " << (n2 + 1) * (n6 + 1) << std::endl;
+  return 0;
+}
 }  // namespace aoc::day13

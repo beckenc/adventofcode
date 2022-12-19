@@ -17,9 +17,11 @@ struct ListNode;
 struct List {
   typedef std::list<ListNode> type;
   type list;
-
+  
+  List() = default;
+  List(std::string_view sv) { extract(sv); }
   auto extract(std::string_view sv) -> std::string_view;
-  auto compare(List lhs) -> int;
+  auto compare(List& right) -> int;
 };
 
 struct ListNode {
@@ -28,6 +30,10 @@ struct ListNode {
   ListNode() = default;
   ListNode(int i) : _elem{i} {}
   ListNode(List&& list) : _elem{list} {}
+  ListNode(ListNode&&) = default;
+  ListNode(const ListNode&) = default;
+  ListNode& operator=(ListNode&&) = default;
+  ListNode& operator=(const ListNode&) = default;  
 
   auto is_list() const { return std::holds_alternative<List>(_elem); };
   auto is_int() const { return std::holds_alternative<int>(_elem); };
