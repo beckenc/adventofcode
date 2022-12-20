@@ -86,6 +86,8 @@ int main(int argc, char **argv) {
   // day_fn.insert({"day25_1", [](int ac, char **av) { return aoc::day25::main_pt1(ac, av); }});
   // day_fn.insert({"day25_2", [](int ac, char **av) { return aoc::day25::main_pt2(ac, av); }});
 
+  day_fn.insert({"aoc", [](int ac, char **av) { return aoc::day14::main_pt2(ac, av); }});
+
   auto app = fs::path(argv[0]).filename().string();
   if (auto fn = day_fn[app])
   {
