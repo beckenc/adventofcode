@@ -1,10 +1,9 @@
 #include "day14/day14.hpp"
 
 #include <cassert>
-#include <chrono>
 #include <iostream>
 #include <sstream>
-#include <thread>
+
 namespace aoc::day14 {
 
 std::istream& operator>>(std::istream& is, Coordinates& point) {
