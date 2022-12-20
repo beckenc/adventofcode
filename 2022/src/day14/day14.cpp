@@ -135,6 +135,7 @@ auto main_pt2(int argc, char** argv) -> int {
                         });
 
   auto [min, max] = cave.x_minmax();
+
   auto xmin =
       std::to_string(min - 200);  // asume, that 200 is kind of infinitive
   auto xmax = std::to_string(max + 200);

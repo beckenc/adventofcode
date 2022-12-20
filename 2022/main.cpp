@@ -18,7 +18,7 @@
 #include "day12/day12.hpp"
 #include "day13/day13.hpp"
 #include "day14/day14.hpp"
-// #include "day15/day15.hpp"
+#include "day15/day15.hpp"
 // #include "day16/day16.hpp"
 // #include "day17/day17.hpp"
 // #include "day18/day18.hpp"
@@ -63,8 +63,8 @@ int main(int argc, char **argv) {
   day_fn.insert({"day13_2", [](int ac, char **av) { return aoc::day13::main_pt2(ac, av); }});
   day_fn.insert({"day14_1", [](int ac, char **av) { return aoc::day14::main_pt1(ac, av); }});
   day_fn.insert({"day14_2", [](int ac, char **av) { return aoc::day14::main_pt2(ac, av); }});
-  // day_fn.insert({"day15_1", [](int ac, char **av) { return aoc::day15::main_pt1(ac, av); }});
-  // day_fn.insert({"day15_2", [](int ac, char **av) { return aoc::day15::main_pt2(ac, av); }});
+  day_fn.insert({"day15_1", [](int ac, char **av) { return aoc::day15::main_pt1(ac, av); }});
+  day_fn.insert({"day15_2", [](int ac, char **av) { return aoc::day15::main_pt2(ac, av); }});
   // day_fn.insert({"day16_1", [](int ac, char **av) { return aoc::day16::main_pt1(ac, av); }});
   // day_fn.insert({"day16_2", [](int ac, char **av) { return aoc::day16::main_pt2(ac, av); }});
   // day_fn.insert({"day17_1", [](int ac, char **av) { return aoc::day17::main_pt1(ac, av); }});
@@ -85,8 +85,6 @@ int main(int argc, char **argv) {
   // day_fn.insert({"day24_2", [](int ac, char **av) { return aoc::day24::main_pt2(ac, av); }});
   // day_fn.insert({"day25_1", [](int ac, char **av) { return aoc::day25::main_pt1(ac, av); }});
   // day_fn.insert({"day25_2", [](int ac, char **av) { return aoc::day25::main_pt2(ac, av); }});
-
-  day_fn.insert({"aoc", [](int ac, char **av) { return aoc::day14::main_pt2(ac, av); }});
 
   auto app = fs::path(argv[0]).filename().string();
   if (auto fn = day_fn[app])
