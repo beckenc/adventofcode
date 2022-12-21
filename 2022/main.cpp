@@ -24,7 +24,7 @@
 // #include "day18/day18.hpp"
 // #include "day19/day19.hpp"
 // #include "day20/day20.hpp"
-// #include "day21/day21.hpp"
+#include "day21/day21.hpp"
 // #include "day22/day22.hpp"
 // #include "day23/day23.hpp"
 // #include "day24/day24.hpp"
@@ -75,8 +75,8 @@ int main(int argc, char **argv) {
   // day_fn.insert({"day19_2", [](int ac, char **av) { return aoc::day19::main_pt2(ac, av); }});
   // day_fn.insert({"day20_1", [](int ac, char **av) { return aoc::day20::main_pt1(ac, av); }});
   // day_fn.insert({"day20_2", [](int ac, char **av) { return aoc::day20::main_pt2(ac, av); }});
-  // day_fn.insert({"day21_1", [](int ac, char **av) { return aoc::day21::main_pt1(ac, av); }});
-  // day_fn.insert({"day21_2", [](int ac, char **av) { return aoc::day21::main_pt2(ac, av); }});
+  day_fn.insert({"day21_1", [](int ac, char **av) { return aoc::day21::main_pt1(ac, av); }});
+  day_fn.insert({"day21_2", [](int ac, char **av) { return aoc::day21::main_pt2(ac, av); }});
   // day_fn.insert({"day22_1", [](int ac, char **av) { return aoc::day22::main_pt1(ac, av); }});
   // day_fn.insert({"day22_2", [](int ac, char **av) { return aoc::day22::main_pt2(ac, av); }});
   // day_fn.insert({"day23_1", [](int ac, char **av) { return aoc::day23::main_pt1(ac, av); }});
