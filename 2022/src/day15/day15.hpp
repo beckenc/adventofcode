@@ -53,6 +53,8 @@ class Grid {
  public:
   typedef std::variant<Sensor, Beacon> type_t;
   typedef std::map<utils::Coordinates, type_t> map_t;
+  typedef std::optional<std::pair<int64_t, int64_t> > coverage_t;
+  typedef std::vector<std::pair<int64_t, int64_t> > line_coverage_t;
 
   auto emplace(auto&& value) { _elements[value.position()] = value; }
   auto elem(utils::Coordinates point) const -> std::optional<type_t> {
@@ -62,9 +64,11 @@ class Grid {
     return std::nullopt;
   };
   const auto& range() const { return _elements; };
+  auto count_no_beacon_positions(int64_t y) const -> unsigned;
 
-  auto count_no_beacon_positions(auto y) const
-      -> unsigned;
+  auto get_line_coverage(const Sensor& sensor, int64_t line) const
+      -> coverage_t;
+  auto get_line_coverage(int64_t line) const -> line_coverage_t;
 
  private:
   map_t _elements;

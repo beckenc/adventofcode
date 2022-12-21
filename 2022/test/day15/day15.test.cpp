@@ -35,7 +35,14 @@ TEST(SimpleTestPt1, day15) {
     elements.emplace(sensor.beacon());
   });
 
-  EXPECT_EQ(26, elements.count_no_beacon_positions(10));
+// 9 ...#########################...
+// 10 ..####B######################..
+// 11 .###S#############.###########.
+// 35, 25, 30
+
+  EXPECT_EQ(25, elements.count_no_beacon_positions(int64_t{9}));
+  EXPECT_EQ(26, elements.count_no_beacon_positions(int64_t{10}));
+  EXPECT_EQ(28, elements.count_no_beacon_positions(int64_t{11})); 
 }
 
 TEST(SimpleTestPt2, day15) {}

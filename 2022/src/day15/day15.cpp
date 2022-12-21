@@ -4,6 +4,7 @@
 #include <cassert>
 #include <iostream>
 #include <map>
+#include <optional>
 #include <ranges>
 #include <regex>
 
@@ -29,28 +30,77 @@ auto operator>>(std::istream& is, Sensor& sensor) -> std::istream& {  //
   return is;
 }
 
-auto Grid::count_no_beacon_positions(auto y) const -> unsigned {
-  int result = 0;
-  std::ranges::for_each(
-      std::ranges::iota_view(-6000000, 6000000), [this, &result, &y](auto i) {
-        auto point = utils::Coordinates{{i, y}};
+auto Grid::get_line_coverage(const Sensor& sensor, int64_t line) const
+    -> coverage_t {
+  auto coverage = coverage_t{};
 
-        auto is_covered_by_sensor = [&point](auto&& arg) {
+  auto is_beacon = [&line, this](auto x) {
+    if (auto e = elem({{x, line}}); std::holds_alternative<Beacon>(*e)) {
+      return true;
+    }
+    return false;
+  };
+
+  auto [xs, ys] = sensor.position().xy();
+  auto mdist = sensor.dist();
+  if ((ys >= line && (ys - mdist) <= line) ||
+      (ys <= line && (ys + mdist) >= line)) {
+    auto xdiff = std::abs(mdist - std::abs(ys - line));
+    auto xmin = xs - xdiff;
+    auto xmax = xs + xdiff;
+    if (is_beacon(xmin)) {
+      xmin++;
+    }
+    if (is_beacon(xmax)) {
+      xmax--;
+    }
+    if (xmin < xmax) {
+      coverage = std::make_pair(xmin, xmax);
+    }
+  }
+  return coverage;
+}
+
+auto Grid::get_line_coverage(int64_t line) const -> line_coverage_t {
+  auto line_coverage = line_coverage_t{};
+  std::ranges::for_each(_elements, [&line_coverage, &line, this](auto&& var) {
+    std::visit(
+        [&line_coverage, &line, this](auto&& arg) {
           using T = std::decay_t<decltype(arg)>;
           if constexpr (std::is_same_v<T, Sensor>) {
-            return arg.dist(point) <= arg.dist();
+            if (auto coverage = get_line_coverage(arg, line); coverage) {
+              line_coverage.emplace_back(*coverage);
+            }
           }
-          return false;
-        };
+        },
+        var.second);
+  });
+  std::ranges::sort(line_coverage, std::less_equal());
+  // reduce overlapped regions
+  auto it = line_coverage.begin();
+  while (true) {
+    if (auto& [xmin1, xmax1] = *it++; it != line_coverage.end()) {
+      auto& [xmin2, xmax2] = *it;
+      if (xmin2 <= (xmax1 + 1)) {
+        xmax1 = std::max(xmax1, xmax2);
+        line_coverage.erase(it--);
+      }
+    } else {
+      break;
+    }
+  }
 
-        if (!std::ranges::none_of(range(), [&is_covered_by_sensor](auto&& var) {
-              return std::visit(is_covered_by_sensor, var.second);
-            })) {
-          if (!elem(point)) {
-            result++;
-          }
-        }
-      });
+  return line_coverage;
+}
+
+auto Grid::count_no_beacon_positions(int64_t y) const -> unsigned {
+  auto line_coverage = get_line_coverage(y);
+
+  int result = 0;
+  for (auto [min, max] : line_coverage) {
+    result += (max - min) + 1;
+  }
+
   return result;
 }
 
@@ -66,7 +116,28 @@ auto main_pt1(int argc, char** argv) -> int {  //
 }
 
 auto main_pt2(int argc, char** argv) -> int {  //
-  std::cout << "Part2:" << std::endl;
+  auto grid = Grid{};
+  std::ranges::for_each(std::ranges::istream_view<Sensor>(std::cin),
+                        [&grid](auto&& sensor) {  //
+                          grid.emplace(std::forward<Sensor>(sensor));
+                          grid.emplace(std::forward<Beacon>(sensor.beacon()));
+                        });
+
+  for (int y = 0; y <= 4000000; ++y) {
+    auto c = grid.get_line_coverage(y);
+    assert(c.size() <= 2);
+    if (c.size() == 2) {
+      uint64_t x1 = c[0].second + 1;
+      uint64_t x2 = c[1].first - 1;
+      assert(x1 == x2);
+      if (!grid.elem({{x1, y}})) {
+        std::cout << "Part2:" << uint64_t{x1 * 4000000} + y << std::endl;
+        break;
+      }
+    }
+  }
+
   return 0;
 }
+
 }  // namespace aoc::day15
