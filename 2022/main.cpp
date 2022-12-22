@@ -23,7 +23,7 @@
 // #include "day17/day17.hpp"
 // #include "day18/day18.hpp"
 // #include "day19/day19.hpp"
-// #include "day20/day20.hpp"
+#include "day20/day20.hpp"
 #include "day21/day21.hpp"
 // #include "day22/day22.hpp"
 // #include "day23/day23.hpp"
@@ -32,6 +32,7 @@
 
 
 namespace fs = std::filesystem;
+
 
 int main(int argc, char **argv) {
   std::map<std::string_view, std::function<int(int, char **)> > day_fn;
@@ -73,8 +74,8 @@ int main(int argc, char **argv) {
   // day_fn.insert({"day18_2", [](int ac, char **av) { return aoc::day18::main_pt2(ac, av); }});
   // day_fn.insert({"day19_1", [](int ac, char **av) { return aoc::day19::main_pt1(ac, av); }});
   // day_fn.insert({"day19_2", [](int ac, char **av) { return aoc::day19::main_pt2(ac, av); }});
-  // day_fn.insert({"day20_1", [](int ac, char **av) { return aoc::day20::main_pt1(ac, av); }});
-  // day_fn.insert({"day20_2", [](int ac, char **av) { return aoc::day20::main_pt2(ac, av); }});
+  day_fn.insert({"day20_1", [](int ac, char **av) { return aoc::day20::main_pt1(ac, av); }});
+  day_fn.insert({"day20_2", [](int ac, char **av) { return aoc::day20::main_pt2(ac, av); }});
   day_fn.insert({"day21_1", [](int ac, char **av) { return aoc::day21::main_pt1(ac, av); }});
   day_fn.insert({"day21_2", [](int ac, char **av) { return aoc::day21::main_pt2(ac, av); }});
   // day_fn.insert({"day22_1", [](int ac, char **av) { return aoc::day22::main_pt1(ac, av); }});
@@ -85,7 +86,7 @@ int main(int argc, char **argv) {
   // day_fn.insert({"day24_2", [](int ac, char **av) { return aoc::day24::main_pt2(ac, av); }});
   // day_fn.insert({"day25_1", [](int ac, char **av) { return aoc::day25::main_pt1(ac, av); }});
   // day_fn.insert({"day25_2", [](int ac, char **av) { return aoc::day25::main_pt2(ac, av); }});
-  day_fn.insert({"aoc", [](int ac, char **av) { return aoc::day21::main_pt2(ac, av); }});
+  day_fn.insert({"aoc", [](int ac, char **av) { return aoc::day20::main_pt1(ac, av); }});
   auto app = fs::path(argv[0]).filename().string();
   if (auto fn = day_fn[app])
   {
