@@ -15,13 +15,6 @@ auto main_pt1(int argc, char **argv) -> int {  //
         list.emplace_back(std::forward<decltype(number)>(number));
       });
 
-  auto print = [&list](std::string append = "") {
-#if 0
-    std::ranges::for_each(list, [](auto &&i) { std::cout << i.value << ", "; });
-    std::cout << append << std::endl;
-#endif
-  };
-
   auto begin = [&list](auto li) {
     for (; li != std::ranges::end(list) && li->touched; std::advance(li, 1))
       ;
@@ -38,17 +31,10 @@ auto main_pt1(int argc, char **argv) -> int {  //
 
   for (auto li = begin(std::ranges::begin(list)); li != std::ranges::end(list);
        li = begin(li)) {
-    auto curpos = std::distance(list.begin(), li);
     auto value = li->value;
-
-    auto nxtpos = nextpos(curpos, value);
-
-    print();
+    auto nxtpos = nextpos(std::distance(list.begin(), li), value);
     list.erase(li);
-    print();
-    list.insert(std::ranges::begin(list) + nxtpos,
-                Number{.value{value}, .touched{true}});
-    print("\n");
+    list.insert(std::ranges::begin(list) + nxtpos, {value, true});
   }
 
   auto pos0 = std::distance(list.begin(), std::ranges::find(list, Number{}));
