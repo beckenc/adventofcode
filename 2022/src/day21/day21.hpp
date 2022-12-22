@@ -2,6 +2,7 @@
 #include <functional>
 #include <iostream>
 #include <map>
+#include <optional>
 #include <string>
 #include <variant>
 
@@ -13,9 +14,9 @@ typedef std::map<std::string, Monkey> Monkeys;
 class Monkey {
  public:
   struct ArithmeticOp {
-    typedef std::function<int64_t(int64_t, int64_t)> arithmetic_op_t;
+    typedef std::function<int64_t(int64_t, int64_t)> type_t;
     std::pair<std::string, std::string> _param;
-    arithmetic_op_t _op;
+    type_t _op;
     auto operator()(auto&& monkeys) const {
       auto lhs = monkeys[_param.first];
       auto rhs = monkeys[_param.second];
@@ -31,6 +32,10 @@ class Monkey {
         _op{std::forward<op_type>(op)} {}
 
   auto name() const { return _name; }
+  auto fix_arithmetic(int64_t value) { _op = value; }
+  auto fix_arithmetic(ArithmeticOp::type_t op) {
+    std::get<ArithmeticOp>(_op)._op = op;
+  }
 
   auto operator()(auto&& monkeys) const {
     return std::visit(
@@ -68,7 +73,7 @@ inline auto operator>>(std::istream& is, Monkey& monkey) -> std::istream& {
     monkey = Monkey{std::move(name), v};
   } else {
     is >> op >> rhs;
-    auto fn = Monkey::ArithmeticOp::arithmetic_op_t{};
+    auto fn = Monkey::ArithmeticOp::type_t{};
     switch (op) {
       case '+':
         fn = std::plus();
