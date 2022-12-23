@@ -8,17 +8,14 @@
 
 namespace aoc::day20 {
 
-
 auto List::nextpos(auto current_pos, auto increment) const {
-  auto max = std::ssize(*this);
-  auto dist = increment % (max - 1);
-  if (std::signbit(dist)) {
-    dist += (max - 1);
+  auto max = std::ssize(*this) - 1;
+  if (std::signbit(increment)) {
+    increment += ((std::abs(increment) / max) + 1) * max;
   }
-  auto pos = (current_pos + dist) % (max - 1);
+  auto pos = (current_pos + increment) % max;
   auto it = std::begin(*this);
-  std::advance(it, pos);
-  return it;
+  return it + pos;
 };
 
 auto main_pt1(int argc, char **argv) -> int {  //
