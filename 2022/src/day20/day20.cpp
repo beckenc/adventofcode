@@ -45,9 +45,7 @@ auto RefList::sumUp(auto ref, auto positions) const {
   auto sum = int64_t{0};
   for (auto pos : positions) {
     auto npos = (pos + refpos) % std::ssize(*this);
-    auto it = std::begin(*this);
-    std::advance(it, npos);
-    sum += **it;
+    sum += *(at(npos));
   }
   return sum;
 }
