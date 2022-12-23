@@ -9,10 +9,8 @@
 
 namespace aoc::day20 {
 
-auto RefList::currentpos(auto number) const {
-  auto numpos = std::ranges::find_if(*this, [&number](auto &&it) {  //
-    return it->uuid == number.uuid;
-  });
+auto RefList::currentpos(auto li) const {
+  auto numpos = std::ranges::find(*this, li);
   assert(numpos != std::end(*this));
   return std::distance(std::begin(*this), numpos);
 };
@@ -30,8 +28,8 @@ auto RefList::nextpos(auto current, auto increment) const {
 auto RefList::shuffle(auto n) {
   for (auto i : std::views::iota(0) | std::views::take(n)) {
     for (auto li = _list.begin(); li != _list.end(); ++li) {
-      auto current = currentpos(*li);
-      auto [next, pos] = nextpos(current, li->value);
+      auto current = currentpos(li);
+      auto [next, pos] = nextpos(current, *li);
       erase(std::begin(*this) + current);
       insert(next, li);
     }
@@ -40,17 +38,16 @@ auto RefList::shuffle(auto n) {
 }
 
 auto RefList::sumUp(auto ref, auto positions) const {
-  auto refpos = std::distance(std::begin(*this),
-                              std::ranges::find_if(*this, [&ref](auto &&n) {
-                                return n->value == ref;
-                              }));
+  auto it = std::ranges::find(_list, ref);
+  auto refit = std::ranges::find(*this, it);
+  auto refpos = std::distance(std::begin(*this), refit);
 
   auto sum = int64_t{0};
   for (auto pos : positions) {
     auto npos = (pos + refpos) % std::ssize(*this);
     auto it = std::begin(*this);
     std::advance(it, npos);
-    sum += (*it)->value;
+    sum += **it;
   }
   return sum;
 }
@@ -76,7 +73,7 @@ auto main_pt2(int argc, char **argv) -> int {  //
   std::ranges::for_each(
       std::ranges::istream_view<List::value_type>(std::cin),
       [&list, pos = 0](auto &&number) mutable {
-        number.value *= 811589153;
+        number *= 811589153;
         list.emplace_back(std::forward<decltype(number)>(number));
       });
 
