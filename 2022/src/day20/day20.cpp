@@ -11,7 +11,7 @@ namespace aoc::day20 {
 
 auto RefList::currentpos(auto number) const {
   auto numpos = std::ranges::find_if(*this, [&number](auto &&it) {  //
-    return it->id == number.id;
+    return it->uuid == number.uuid;
   });
   assert(numpos != std::end(*this));
   return std::distance(std::begin(*this), numpos);
@@ -27,13 +27,32 @@ auto RefList::nextpos(auto current, auto increment) const {
   return std::make_pair(it + next, next);
 };
 
-auto RefList::shuffle() {
-  for (auto li = _list.begin(); li != _list.end(); ++li) {
-    auto current = currentpos(*li);
-    auto [next, pos] = nextpos(current, li->value);
-    erase(std::begin(*this) + current);
-    insert(next, li);
+auto RefList::shuffle(auto n) {
+  for (auto i : std::views::iota(0) | std::views::take(n)) {
+    for (auto li = _list.begin(); li != _list.end(); ++li) {
+      auto current = currentpos(*li);
+      auto [next, pos] = nextpos(current, li->value);
+      erase(std::begin(*this) + current);
+      insert(next, li);
+    }
   }
+  return *this;
+}
+
+auto RefList::sumUp(auto ref, auto positions) const {
+  auto refpos = std::distance(std::begin(*this),
+                              std::ranges::find_if(*this, [&ref](auto &&n) {
+                                return n->value == ref;
+                              }));
+
+  auto sum = int64_t{0};
+  for (auto pos : positions) {
+    auto npos = (pos + refpos) % std::ssize(*this);
+    auto it = std::begin(*this);
+    std::advance(it, npos);
+    sum += (*it)->value;
+  }
+  return sum;
 }
 
 auto main_pt1(int argc, char **argv) -> int {  //
@@ -44,20 +63,8 @@ auto main_pt1(int argc, char **argv) -> int {  //
         list.emplace_back(std::forward<decltype(number)>(number));
       });
 
-  auto shuffled = RefList{list};
-  shuffled.shuffle();
-
-  auto pos0 = std::distance(
-      std::begin(shuffled),
-      std::ranges::find_if(shuffled, [](auto &&n) { return n->value == 0; }));
-
-  auto sum = int64_t{0};
-  for (auto pos : std::vector<int>{1000, 2000, 3000}) {
-    auto npos = (pos + pos0) % std::ssize(shuffled);
-    auto it = std::begin(shuffled);
-    std::advance(it, npos);
-    sum += (*it)->value;
-  }
+  auto sum = RefList{list}.shuffle(1).sumUp(
+      0, std::initializer_list{1000, 2000, 3000});
 
   std::cout << "Part1:" << sum << std::endl;
 
@@ -73,22 +80,8 @@ auto main_pt2(int argc, char **argv) -> int {  //
         list.emplace_back(std::forward<decltype(number)>(number));
       });
 
-  auto shuffled = RefList{list};
-  for (auto i : std::views::iota(0) | std::views::take(10)) {
-    shuffled.shuffle();
-  }
-
-  auto pos0 = std::distance(
-      std::begin(shuffled),
-      std::ranges::find_if(shuffled, [](auto &&n) { return n->value == 0; }));
-
-  auto sum = int64_t{0};
-  for (auto pos : std::vector<int>{1000, 2000, 3000}) {
-    auto npos = (pos + pos0) % std::ssize(shuffled);
-    auto it = std::begin(shuffled);
-    std::advance(it, npos);
-    sum += (*it)->value;
-  }
+  auto sum = RefList{list}.shuffle(10).sumUp(
+      0, std::initializer_list{1000, 2000, 3000});
 
   std::cout << "Part2:" << sum << std::endl;
 

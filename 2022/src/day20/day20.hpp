@@ -7,13 +7,10 @@ namespace aoc::day20 {
 
 struct Number {
   int64_t value = 0;
-  int id = 0;
-  auto operator==(const Number& rhs) const { return id == rhs.id; };
-  auto operator<=>(const Number& rhs) const { return id <=> rhs.id; };
+  int uuid = 0;
 };
 
-struct List : public std::vector<Number> {  //
-};
+typedef std::vector<Number> List;
 
 struct RefList : public std::vector<List::const_iterator> {
   RefList(const List& list) : _list{list} {
@@ -23,16 +20,17 @@ struct RefList : public std::vector<List::const_iterator> {
   }
   auto currentpos(auto number) const;
   auto nextpos(auto current_pos, auto increment) const;
-  auto shuffle();
+  auto shuffle(auto n);
+  auto sumUp(auto ref, auto positions) const;
 
  private:
   const List& _list;
 };
 
 inline auto& operator>>(std::istream& is, Number& number) {
-  static int id = 0;
+  static int uuid = 0;
   is >> number.value;
-  number.id = id++;
+  number.uuid = uuid++;
   return is;
 }
 
