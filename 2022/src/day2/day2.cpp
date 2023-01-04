@@ -42,11 +42,11 @@ Round2::Round2(SHAPE opponent, OUTCOME outcome)
              : (opponent == SHAPE::rock)  ? SHAPE::sizzor
                                           : SHAPE::paper} {}
 
-auto main_pt1(int argc, char **argv) -> int {
+auto main_pt1([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   std::cout << "Part1:" << Game<Round1>{std::cin}.play() << "\n";
   return 0;
 }
-auto main_pt2(int argc, char **argv) -> int {
+auto main_pt2([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   std::cout << "Part2:" << Game<Round2>{std::cin}.play() << "\n";
   return 0;
 }

@@ -21,6 +21,6 @@ struct RefList : public std::vector<List::const_iterator> {
   const List& _list;
 };
 
-auto main_pt1(int argc, char** argv) -> int;
-auto main_pt2(int argc, char** argv) -> int;
+auto main_pt1([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int;
+auto main_pt2([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int;
 }  // namespace aoc::day20

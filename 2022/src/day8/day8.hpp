@@ -63,8 +63,8 @@ class Grid : public std::vector<std::vector<Tree>> {
 
   auto get_high_score() const {
     unsigned high_score = 0;
-    for (auto irow = 0; irow < size(); ++irow)
-      for (auto icol = 0; icol < at(irow).size(); ++icol)
+    for (size_t irow = 0; irow < size(); ++irow)
+      for (size_t icol = 0; icol < at(irow).size(); ++icol)
         if (auto c = get_score(irow, icol); c > high_score) {
           high_score = c;
         }
@@ -87,12 +87,12 @@ class Grid : public std::vector<std::vector<Tree>> {
       visibilites.insert({size() - 1 - row, col});
     };
 
-    for (auto i = 0; i < size(); ++i) {
+    for (size_t i = 0; i < size(); ++i) {
       auto row = get_row(i);
       update_visibily_map(row, i, row_inserter);
       update_visibily_map(row | std::views::reverse, i, row_reverse_inserter);
     }
-    for (auto i = 0; i < this->at(0).size(); ++i) {
+    for (size_t i = 0; i < this->at(0).size(); ++i) {
       auto col = get_column(i);
       update_visibily_map(col, i, col_inserter);
       update_visibily_map(col | std::views::reverse, i, col_reverse_inserter);
@@ -114,6 +114,6 @@ inline std::istream& operator>>(std::istream& is, Grid& rs) {
   return is;
 }
 
-auto main_pt1(int argc, char** argv) -> int;
-auto main_pt2(int argc, char** argv) -> int;
+auto main_pt1([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int;
+auto main_pt2([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int;
 }  // namespace aoc::day8

@@ -7,7 +7,7 @@
 
 namespace aoc::day21 {
 
-auto main_pt1(int argc, char **argv) -> int {
+auto main_pt1([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   auto monkeys = Monkeys{};
   std::ranges::for_each(std::ranges::istream_view<Monkey>(std::cin),
                         [&monkeys](auto &&monkey) {  //
@@ -19,7 +19,7 @@ auto main_pt1(int argc, char **argv) -> int {
   return 0;
 }
 
-auto main_pt2(int argc, char **argv) -> int {
+auto main_pt2([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   auto monkeys = Monkeys{};
   std::ranges::for_each(std::ranges::istream_view<Monkey>(std::cin),
                         [&monkeys](auto &&monkey) {  //

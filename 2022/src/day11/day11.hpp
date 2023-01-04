@@ -93,14 +93,14 @@ class MonkeyGame {
   }
 
   auto play_game1(auto rounds) {
-    for (auto i : std::views::iota(0, rounds)) {
+    for ([[maybe_unused]] auto i : std::views::iota(0, rounds)) {
       play_game1();
     }
     return *this;
   }
 
   auto play_game2(auto rounds) {
-    for (auto i : std::views::iota(0, rounds)) {
+    for ([[maybe_unused]] auto i : std::views::iota(0, rounds)) {
       play_game2();
     }
     return *this;
@@ -144,6 +144,6 @@ class MonkeyGame {
   Participants_t _participants;
 };
 
-auto main_pt1(int argc, char** argv) -> int;
-auto main_pt2(int argc, char** argv) -> int;
+auto main_pt1([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int;
+auto main_pt2([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int;
 }  // namespace aoc::day11

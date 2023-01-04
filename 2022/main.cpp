@@ -34,7 +34,7 @@
 namespace fs = std::filesystem;
 
 
-int main(int argc, char **argv) {
+int main([[maybe_unused]] int argc, [[maybe_unused]] char **argv) {
   std::map<std::string_view, std::function<int(int, char **)> > day_fn;
   day_fn.insert({"day1_1", [](int ac, char **av) { return aoc::day1::main_pt1(ac, av); }});
   day_fn.insert({"day1_2", [](int ac, char **av) { return aoc::day1::main_pt2(ac, av); }});

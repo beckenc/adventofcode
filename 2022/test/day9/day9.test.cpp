@@ -27,7 +27,7 @@ TEST(SimpleTestPt1, day9) {
   Grid tail_places;
   std::ranges::for_each(
       motions.get(), [&head, &tail, &head_places, &tail_places](Motion motion) {
-        for (auto num_steps = 0; num_steps < motion.num_steps(); ++num_steps) {
+        for (auto num_steps = 0u; num_steps < motion.num_steps(); ++num_steps) {
           head.move(Motion::motion_t{motion.direction(), 1});
           head_places.visit(head.pos());
 

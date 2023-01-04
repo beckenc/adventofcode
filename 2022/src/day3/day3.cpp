@@ -35,7 +35,7 @@ ElfGroup::ElfGroup(Rucksacks &&rs) : _rucksacks{rs} {
   });
 };
 
-auto main_pt1(int argc, char **argv) -> int {
+auto main_pt1([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   auto overall_prio = 0;
   for (auto rucksaecke = std::ranges::istream_view<Rucksack>(std::cin);
        const auto &rucksack : rucksaecke) {
@@ -46,7 +46,7 @@ auto main_pt1(int argc, char **argv) -> int {
   return 0;
 }
 
-auto main_pt2(int argc, char **argv) -> int {
+auto main_pt2([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   auto overall_prio = 0;
   for (auto groups = std::ranges::istream_view<ElfGroup>(std::cin);
        auto &group : groups) {

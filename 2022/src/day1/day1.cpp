@@ -36,12 +36,12 @@ static auto part2(auto calories) {
   std::cout << "Part2:" << top_three_calories << "\n";
 }
 
-auto main_pt1(int argc, char **argv) -> int {
+auto main_pt1([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   part1(count_calories(std::cin));
   return 0;
 }
 
-auto main_pt2(int argc, char **argv) -> int {
+auto main_pt2([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   part2(count_calories(std::cin));
   return 0;
 }

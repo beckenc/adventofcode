@@ -76,6 +76,6 @@ class Grid {
 
 auto operator>>(std::istream& is, Sensor& sensor) -> std::istream&;
 
-auto main_pt1(int argc, char** argv) -> int;
-auto main_pt2(int argc, char** argv) -> int;
+auto main_pt1([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int;
+auto main_pt2([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int;
 }  // namespace aoc::day15

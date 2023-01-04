@@ -62,12 +62,12 @@ static auto participants = MonkeyGame::Participants_t{
     //     If false: throw to monkey 2
     {7, {98, 89, 78, 73, 71}, Operation::add, 4, Monkey::test_t{2, 3, 2}}};
 
-auto main_pt1(int argc, char **argv) -> int {
+auto main_pt1([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   MonkeyGame{participants}.play_game1(20).print_result(std::cout);
   return 0;
 }
 
-auto main_pt2(int argc, char **argv) -> int {
+auto main_pt2([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   MonkeyGame{participants}.play_game1(10000).print_result(std::cout);
   return 0;
 }

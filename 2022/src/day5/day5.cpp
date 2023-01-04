@@ -46,9 +46,7 @@ void CrateStacks::print_stacks() const {
   std::cout << "\n";
 }
 
-auto main_pt1(int argc, char **argv) -> int {
-  unsigned result;
-
+auto main_pt1([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   auto crate_stacks = CrateStacks{std::cin};
   for (auto rearrangement :
        std::ranges::istream_view<Rearrangement>(std::cin)) {
@@ -58,8 +56,7 @@ auto main_pt1(int argc, char **argv) -> int {
   return 0;
 }
 
-auto main_pt2(int argc, char **argv) -> int {
-  unsigned result;
+auto main_pt2([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   auto crate_stacks = CrateStacks{std::cin};
   for (auto rearrangement :
        std::ranges::istream_view<Rearrangement>(std::cin)) {

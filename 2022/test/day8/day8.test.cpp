@@ -19,7 +19,6 @@ TEST(SimpleTestPt1, day8) {
                {"33549", {{5, 2}, {9, 4}}},
                {"35390", {{9, 3}, {9, 3}}}};
 
-  unsigned i = 0;
   auto grid = Grid{};
 
   for (auto [row, result] : input) {
@@ -41,7 +40,6 @@ TEST(SimpleTestPt2, day8) {
                {"33549", {{5, 2}, {9, 4}}},
                {"35390", {{9, 3}, {9, 3}}}};
 
-  unsigned i = 0;
   auto grid = Grid{};
 
   for (auto [row, result] : input) {

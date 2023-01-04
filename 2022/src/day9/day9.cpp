@@ -28,7 +28,7 @@ void Knot::follow(Knot head) {
   _pos = { tx + xdiff, ty + ydiff };
 }
 
-auto main_pt1(int argc, char **argv) -> int {
+auto main_pt1([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   Motions motions;
   std::ranges::for_each(std::ranges::istream_view<Motion>(std::cin),
                         [&motions](auto &&motion) {
@@ -39,7 +39,7 @@ auto main_pt1(int argc, char **argv) -> int {
   Grid tail_places;
   std::ranges::for_each(motions.get(), [head = Knot{}, tail = Knot{},
                                         &tail_places](Motion motion) mutable {
-    for (auto num_steps = 0; num_steps < motion.num_steps(); ++num_steps) {
+    for (auto num_steps = 0u; num_steps < motion.num_steps(); ++num_steps) {
       head.move(Motion::motion_t{motion.direction(), 1});
       tail.follow(head);
       tail_places.visit(tail.pos());
@@ -51,7 +51,7 @@ auto main_pt1(int argc, char **argv) -> int {
   return 0;
 }
 
-auto main_pt2(int argc, char **argv) -> int {
+auto main_pt2([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   Motions motions;
   std::ranges::for_each(std::ranges::istream_view<Motion>(std::cin),
                         [&motions](auto &&motion) {
@@ -62,7 +62,7 @@ auto main_pt2(int argc, char **argv) -> int {
   Grid tail_places;
   std::ranges::for_each(motions.get(), [knots = std::vector<Knot>{10},
                                         &tail_places](Motion motion) mutable {
-    for (auto num_steps = 0; num_steps < motion.num_steps(); ++num_steps) {
+    for (auto num_steps = 0u; num_steps < motion.num_steps(); ++num_steps) {
       auto &head = knots.front();
       head.move(Motion::motion_t{motion.direction(), 1});
 

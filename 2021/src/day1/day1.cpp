@@ -15,7 +15,7 @@ auto count_increasing(std::istream &input) {
       });
 }
 
-auto main(int argc, char **argv) {
+auto main([[maybe_unused]] int argc, [[maybe_unused]] char **argv) {
   std::cout << "Advent of code day1\n";
   std::cout << "The measured depth increased in " << count_increasing(std::cin)
             << " cases.\n";

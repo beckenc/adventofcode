@@ -6,7 +6,7 @@
 
 namespace aoc::day10 {
 
-auto main_pt1(int argc, char **argv) -> int {
+auto main_pt1([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   auto prog = CPU::prog_t{};
 
   std::ranges::for_each(std::ranges::istream_view<Instruction>(std::cin), [&prog](auto&& instruction){
@@ -35,7 +35,7 @@ auto main_pt1(int argc, char **argv) -> int {
   return 0;
 }
 
-auto main_pt2(int argc, char **argv) -> int {
+auto main_pt2([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   auto prog = CPU::prog_t{};
 
   std::ranges::for_each(std::ranges::istream_view<Instruction>(std::cin), [&prog](auto&& instruction){

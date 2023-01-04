@@ -26,7 +26,7 @@ auto RefList::nextpos(auto current, auto increment) const {
 };
 
 auto RefList::shuffle(auto n) {
-  for (auto i : std::views::iota(0) | std::views::take(n)) {
+  for ([[maybe_unused]] auto i : std::views::iota(0) | std::views::take(n)) {
     for (auto li = _list.begin(); li != _list.end(); ++li) {
       auto current = currentpos(li);
       auto [next, pos] = nextpos(current, *li);
@@ -50,7 +50,7 @@ auto RefList::sumUp(auto ref, auto positions) const {
   return sum;
 }
 
-auto main_pt1(int argc, char **argv) -> int {  //
+auto main_pt1([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {  //
   auto list = List{};
   std::ranges::for_each(
       std::ranges::istream_view<List::value_type>(std::cin),
@@ -66,7 +66,7 @@ auto main_pt1(int argc, char **argv) -> int {  //
   return 0;
 }
 
-auto main_pt2(int argc, char **argv) -> int {  //
+auto main_pt2([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {  //
   auto list = List{};
   std::ranges::for_each(
       std::ranges::istream_view<List::value_type>(std::cin),

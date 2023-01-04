@@ -104,7 +104,7 @@ auto Grid::count_no_beacon_positions(int64_t y) const -> unsigned {
   return result;
 }
 
-auto main_pt1(int argc, char** argv) -> int {  //
+auto main_pt1([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {  //
   auto grid = Grid{};
   std::ranges::for_each(std::ranges::istream_view<Sensor>(std::cin),
                         [&grid](auto&& sensor) {  //
@@ -115,7 +115,7 @@ auto main_pt1(int argc, char** argv) -> int {  //
   return 0;
 }
 
-auto main_pt2(int argc, char** argv) -> int {  //
+auto main_pt2([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {  //
   auto grid = Grid{};
   std::ranges::for_each(std::ranges::istream_view<Sensor>(std::cin),
                         [&grid](auto&& sensor) {  //

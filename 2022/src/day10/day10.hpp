@@ -40,7 +40,6 @@ struct CPU {
       _pc++;
       _inst_cycle = static_cast<unsigned>(_prog[_pc]._command);
     };
-    auto command = [this]() { return _prog[_pc]._command; };
     auto param = [this]() { return _prog[_pc]._param; };
 
     if (--_inst_cycle == 0) {
@@ -116,6 +115,6 @@ inline std::istream& operator>>(std::istream& is, Instruction& instruction) {
   return is;
 }
 
-auto main_pt1(int argc, char** argv) -> int;
-auto main_pt2(int argc, char** argv) -> int;
+auto main_pt1([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int;
+auto main_pt2([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int;
 }  // namespace aoc::day10

@@ -52,7 +52,7 @@ static auto build_dir_tree(std::istream& is) {
   return tree;
 }
 
-auto main_pt1(int argc, char** argv) -> int {
+auto main_pt1([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   auto tree = build_dir_tree(std::cin);
 
   auto values =
@@ -65,7 +65,7 @@ auto main_pt1(int argc, char** argv) -> int {
   return 0;
 }
 
-auto main_pt2(int argc, char** argv) -> int {
+auto main_pt2([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   auto tree = build_dir_tree(std::cin);
 
   auto free = 70000000 - tree["/"];

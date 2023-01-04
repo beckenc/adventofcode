@@ -77,7 +77,7 @@ static bool compare_lists(std::string_view left, std::string_view right) {
   return (result == 0) || (result == -1);
 }
 
-auto main_pt1(int argc, char** argv) -> int {
+auto main_pt1([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   auto result = 0;
   std::ranges::for_each(
       std::ranges::istream_view<PacketPair>(std::cin),
@@ -91,7 +91,7 @@ auto main_pt1(int argc, char** argv) -> int {
   return 0;
 }
 
-auto main_pt2(int argc, char** argv) -> int {
+auto main_pt2([[maybe_unused]] int argc, [[maybe_unused]] char **argv) -> int {
   auto input = std::vector<std::string>{"[[2]]", "[[6]]"};
   std::ranges::for_each(std::ranges::istream_view<PacketPair>(std::cin),
                         [&input](auto&& pair) mutable {
